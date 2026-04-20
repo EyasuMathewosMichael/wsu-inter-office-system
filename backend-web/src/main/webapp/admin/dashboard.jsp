@@ -16,24 +16,27 @@
     <style>
         /* Global Viewport Reset */
         html, body {
-            height: 100vh;
+            min-height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow-x: hidden;
             background-color: #f8fafc;
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         .app-container {
             display: flex;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            align-items: stretch;
         }
 
         /* Sidebar Styling - Exactly as Announcements */
         #sidebar-wrapper {
             width: 280px;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             background: #1e293b;
             flex-shrink: 0;
             z-index: 1050;
@@ -81,20 +84,18 @@
         .sidebar-overlay {
             display: none;
             position: fixed;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(2px);
+            inset: 0;
+            background: rgba(2, 6, 23, 0.58);
+            backdrop-filter: blur(10px);
             z-index: 1040;
-            top: 0;
-            left: 0;
         }
 
         /* Main Content Area */
         .main-content {
             flex-grow: 1;
             min-width: 0;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             overflow-y: auto;
             position: relative;
         }
@@ -118,14 +119,103 @@
         }
         .stat-card:hover { transform: translateY(-5px); }
 
+        .mobile-stack-table { table-layout: fixed; }
+
         .main-content::-webkit-scrollbar { width: 6px; }
         .main-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
         @media (max-width: 992px) {
-            #sidebar-wrapper { position: fixed; left: -280px; }
-            #sidebar-wrapper.active { left: 0; }
+            #sidebar-wrapper {
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: min(86vw, 320px);
+                max-width: 320px;
+                padding: max(0px, env(safe-area-inset-top)) 12px 12px;
+                background: linear-gradient(180deg, #0f172a 0%, #162338 55%, #1e293b 100%);
+                border-right: 1px solid rgba(148, 163, 184, 0.16);
+                border-top-right-radius: 28px;
+                border-bottom-right-radius: 28px;
+                box-shadow: 0 24px 60px rgba(15, 23, 42, 0.32);
+                transform: translateX(-108%);
+                overflow-y: auto;
+            }
+            #sidebar-wrapper.active { transform: translateX(0); }
+            #sidebar-wrapper .list-group {
+                gap: 6px;
+            }
+            #sidebar-wrapper .list-group-item {
+                margin: 0 6px;
+                padding: 14px 16px;
+                border-radius: 16px;
+            }
+            #sidebar-wrapper .list-group-item:hover {
+                transform: translateX(2px);
+                background: rgba(255, 255, 255, 0.08);
+            }
+            #sidebar-wrapper .list-group-item.active {
+                background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
+                box-shadow: 0 14px 28px rgba(37, 99, 235, 0.35);
+            }
+            #sidebar-wrapper .dropdown > a {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(148, 163, 184, 0.14);
+            }
+            .nav-label {
+                padding: 18px 18px 10px;
+                color: #94a3b8;
+                font-size: 0.68rem;
+            }
             .sidebar-overlay.active { display: block; }
-            .page-header { padding: 15px 20px; }
+            .page-header { padding: 15px 20px; flex-wrap: wrap; gap: 1rem; }
+        }
+
+        @media (max-width: 768px) {
+            .container-fluid { padding-left: 1rem !important; padding-right: 1rem !important; }
+            .card-header {
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+            .card-header .btn {
+                width: 100%;
+            }
+            .mobile-stack-table thead {
+                display: none;
+            }
+            .mobile-stack-table,
+            .mobile-stack-table tbody,
+            .mobile-stack-table tr,
+            .mobile-stack-table td {
+                display: block;
+                width: 100%;
+            }
+            .mobile-stack-table tr {
+                padding: 1rem 1.25rem;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            .mobile-stack-table td {
+                border: 0 !important;
+                padding: 0.35rem 0 !important;
+                text-align: left !important;
+            }
+            .mobile-stack-table td::before {
+                content: attr(data-label);
+                display: block;
+                margin-bottom: 0.2rem;
+                color: #64748b;
+                font-size: 0.72rem;
+                font-weight: 700;
+                letter-spacing: 0.03em;
+                text-transform: uppercase;
+            }
+            .mobile-stack-table td:last-child {
+                padding-bottom: 0 !important;
+            }
+            .mobile-stack-table .text-truncate {
+                max-width: none !important;
+                white-space: normal;
+            }
         }
     </style>
 </head>
@@ -276,7 +366,7 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
+                        <table class="table table-hover align-middle mb-0 mobile-stack-table">
                             <thead class="bg-light text-muted small text-uppercase">
                                 <tr>
                                     <th class="ps-4 py-3">Event Type</th>
@@ -299,15 +389,15 @@
                                         String badgeClass = type.equals("Announcement") ? "text-primary bg-primary-subtle" : "text-warning bg-warning-subtle";
                                 %>
                                 <tr>
-                                    <td class="ps-4">
+                                    <td class="ps-4" data-label="Event Type">
                                         <span class="badge <%= badgeClass %> rounded-pill px-3 py-2 fw-semibold">
                                             <i class="fas <%= type.equals("Announcement") ? "fa-bullhorn" : "fa-tasks" %> me-2"></i><%= type %>
                                         </span>
                                     </td>
-                                    <td><span class="fw-semibold text-dark"><%= rs.getString("target") %></span></td>
-                                    <td><div class="text-muted small text-truncate" style="max-width: 200px;"><%= rs.getString("content") %></div></td>
-                                    <td class="text-muted small"><%= rs.getTimestamp("created_at") %></td>
-                                    <td class="text-end pe-4"><span class="small text-success"><i class="fas fa-check-circle me-1"></i>Synchronized</span></td>
+                                    <td data-label="Target Point"><span class="fw-semibold text-dark"><%= rs.getString("target") %></span></td>
+                                    <td data-label="Subject"><div class="text-muted small text-truncate" style="max-width: 200px;"><%= rs.getString("content") %></div></td>
+                                    <td class="text-muted small" data-label="Timestamp"><%= rs.getTimestamp("created_at") %></td>
+                                    <td class="text-end pe-4" data-label="System State"><span class="small text-success"><i class="fas fa-check-circle me-1"></i>Synchronized</span></td>
                                 </tr>
                                 <% } %>
                             </tbody>

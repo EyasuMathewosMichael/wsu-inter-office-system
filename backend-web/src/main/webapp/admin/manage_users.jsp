@@ -16,24 +16,27 @@
     <style>
         /* Global Viewport Reset */
         html, body {
-            height: 100vh;
+            min-height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow-x: hidden;
             background-color: #f8fafc;
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         .app-container {
             display: flex;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            align-items: stretch;
         }
 
         /* Sidebar Styling - Locked Labels */
         #sidebar-wrapper {
             width: 280px;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             background: #1e293b;
             flex-shrink: 0;
             z-index: 1050;
@@ -81,20 +84,18 @@
         .sidebar-overlay {
             display: none;
             position: fixed;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(2px);
+            inset: 0;
+            background: rgba(2, 6, 23, 0.58);
+            backdrop-filter: blur(10px);
             z-index: 1040;
-            top: 0;
-            left: 0;
         }
 
         /* Main Content */
         .main-content {
             flex-grow: 1;
             min-width: 0;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             overflow-y: auto;
             position: relative;
         }
@@ -160,10 +161,93 @@
         .main-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
         @media (max-width: 992px) {
-            #sidebar-wrapper { position: fixed; left: -280px; }
-            #sidebar-wrapper.active { left: 0; }
+            #sidebar-wrapper {
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: min(86vw, 320px);
+                max-width: 320px;
+                padding: max(0px, env(safe-area-inset-top)) 12px 12px;
+                background: linear-gradient(180deg, #0f172a 0%, #162338 55%, #1e293b 100%);
+                border-right: 1px solid rgba(148, 163, 184, 0.16);
+                border-top-right-radius: 28px;
+                border-bottom-right-radius: 28px;
+                box-shadow: 0 24px 60px rgba(15, 23, 42, 0.32);
+                transform: translateX(-108%);
+                overflow-y: auto;
+            }
+            #sidebar-wrapper.active { transform: translateX(0); }
+            #sidebar-wrapper .list-group {
+                gap: 6px;
+            }
+            #sidebar-wrapper .list-group-item {
+                margin: 0 6px;
+                padding: 14px 16px;
+                border-radius: 16px;
+            }
+            #sidebar-wrapper .list-group-item:hover {
+                transform: translateX(2px);
+                background: rgba(255, 255, 255, 0.08);
+            }
+            #sidebar-wrapper .list-group-item.active {
+                background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
+                box-shadow: 0 14px 28px rgba(37, 99, 235, 0.35);
+            }
+            #sidebar-wrapper .dropdown > a {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(148, 163, 184, 0.14);
+            }
+            .nav-label {
+                padding: 18px 18px 10px;
+                color: #94a3b8;
+                font-size: 0.68rem;
+            }
             .sidebar-overlay.active { display: block; }
-            .page-header { padding: 15px 20px; }
+            .page-header { padding: 15px 20px; flex-wrap: wrap; gap: 1rem; }
+        }
+
+        @media (max-width: 768px) {
+            .container-fluid { padding-left: 1rem !important; padding-right: 1rem !important; }
+            .mobile-stack-table thead {
+                display: none;
+            }
+            .mobile-stack-table,
+            .mobile-stack-table tbody,
+            .mobile-stack-table tr,
+            .mobile-stack-table td {
+                display: block;
+                width: 100%;
+            }
+            .mobile-stack-table tr {
+                padding: 1rem 1.25rem;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            .mobile-stack-table td {
+                border: 0 !important;
+                padding: 0.35rem 0 !important;
+                text-align: left !important;
+            }
+            .mobile-stack-table td::before {
+                content: attr(data-label);
+                display: block;
+                margin-bottom: 0.2rem;
+                color: #64748b;
+                font-size: 0.72rem;
+                font-weight: 700;
+                letter-spacing: 0.03em;
+                text-transform: uppercase;
+            }
+            .mobile-stack-table td:last-child {
+                padding-bottom: 0 !important;
+            }
+            .mobile-stack-table .btn-group {
+                display: inline-flex;
+                width: auto;
+            }
+            .modal-dialog {
+                margin: 0.75rem;
+            }
         }
     </style>
 </head>
@@ -277,7 +361,7 @@
 
             <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 20px;">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-hover align-middle mb-0 mobile-stack-table">
                         <thead class="bg-light text-muted small text-uppercase">
                             <tr>
                                 <th class="ps-4 py-3">Full Name & ID</th>
@@ -305,7 +389,7 @@
                                         String pic = rs.getString("profile_pic_path");
                             %>
                             <tr class="user-row" data-dept="<%= dept %>">
-                                <td class="ps-4">
+                                <td class="ps-4" data-label="Full Name & ID">
                                     <div class="d-flex align-items-center">
                                         <img src="../assets/img/<%= (pic != null && !pic.isEmpty()) ? pic : "default-avatar.png" %>"
                                              class="user-avatar me-3 border"
@@ -316,10 +400,10 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><span class="badge bg-primary-subtle text-primary border-0 px-3 py-2 fw-semibold"><%= userRole %></span></td>
-                                <td><span class="text-muted fw-medium"><%= dept %></span></td>
-                                <td><span class="badge bg-success-subtle text-success px-3">Active</span></td>
-                                <td class="text-end pe-4">
+                                <td data-label="Role"><span class="badge bg-primary-subtle text-primary border-0 px-3 py-2 fw-semibold"><%= userRole %></span></td>
+                                <td data-label="Department"><span class="text-muted fw-medium"><%= dept %></span></td>
+                                <td data-label="Status"><span class="badge bg-success-subtle text-success px-3">Active</span></td>
+                                <td class="text-end pe-4" data-label="Manage">
                                     <div class="btn-group shadow-sm rounded-pill overflow-hidden border">
                                         <button class="btn btn-white btn-sm text-primary px-3"
                                                 onclick="openEditModal('<%=id%>', '<%=name%>', '<%=user%>', '<%=userRole%>', '<%=dept%>', '<%=pic%>')">
@@ -361,16 +445,16 @@
                     </div>
                     <div class="row g-3">
                         <div class="col-12"><input type="text" name="full_name" class="form-control custom-input" placeholder="Full Name" required></div>
-                        <div class="col-6"><input type="text" name="username" class="form-control custom-input" placeholder="Username" required></div>
-                        <div class="col-6"><input type="password" name="password" class="form-control custom-input" placeholder="Password" required></div>
-                        <div class="col-6">
+                        <div class="col-12 col-md-6"><input type="text" name="username" class="form-control custom-input" placeholder="Username" required></div>
+                        <div class="col-12 col-md-6"><input type="password" name="password" class="form-control custom-input" placeholder="Password" required></div>
+                        <div class="col-12 col-md-6">
                             <select name="role" class="form-select custom-input" required>
                                 <option value="Staff">Staff</option>
                                 <option value="Dept Head">Dept Head</option>
                                 <option value="Admin">Admin</option>
                             </select>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 col-md-6">
                             <select name="department" class="form-select custom-input" required>
                                 <option value="Computer Science">Computer Science</option>
                                 <option value="Information Technology">Information Technology</option>
@@ -407,15 +491,15 @@
                             <label class="small fw-bold text-secondary ms-2 mb-1">Full Name</label>
                             <input type="text" name="full_name" id="edit_full_name" class="form-control custom-input" placeholder="Full Name" required>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 col-md-6">
                             <label class="small fw-bold text-secondary ms-2 mb-1">Username</label>
                             <input type="text" name="username" id="edit_username" class="form-control custom-input" placeholder="Username" required>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 col-md-6">
                             <label class="small fw-bold text-secondary ms-2 mb-1">New Password</label>
                             <input type="password" name="password" class="form-control custom-input" placeholder="Leave blank to keep">
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 col-md-6">
                             <label class="small fw-bold text-secondary ms-2 mb-1">Role</label>
                             <select name="role" id="edit_role" class="form-select custom-input" required>
                                 <option value="Staff">Staff</option>
@@ -423,7 +507,7 @@
                                 <option value="Admin">Admin</option>
                             </select>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 col-md-6">
                             <label class="small fw-bold text-secondary ms-2 mb-1">Department</label>
                             <select name="department" id="edit_department" class="form-select custom-input" required>
                                 <option value="Computer Science">Computer Science</option>

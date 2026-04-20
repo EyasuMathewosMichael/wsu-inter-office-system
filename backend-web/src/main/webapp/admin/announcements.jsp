@@ -17,10 +17,10 @@
     <style>
         /* 1. Global Viewport Reset */
         html, body {
-            height: 100vh;
+            min-height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow-x: hidden;
             background-color: #f8fafc;
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
@@ -28,14 +28,17 @@
         /* 2. Seamless Flex Layout */
         .app-container {
             display: flex;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            align-items: stretch;
         }
 
         /* 3. Sidebar Styling */
         #sidebar-wrapper {
             width: 280px;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             background: #1e293b;
             flex-shrink: 0;
             z-index: 1050;
@@ -83,20 +86,18 @@
         .sidebar-overlay {
             display: none;
             position: fixed;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(2px);
+            inset: 0;
+            background: rgba(2, 6, 23, 0.58);
+            backdrop-filter: blur(10px);
             z-index: 1040;
-            top: 0;
-            left: 0;
         }
 
         /* 4. Main Content */
         .main-content {
             flex-grow: 1;
             min-width: 0;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             overflow-y: auto;
             position: relative;
         }
@@ -154,16 +155,65 @@
         @media (max-width: 992px) {
             #sidebar-wrapper {
                 position: fixed;
-                left: -280px;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: min(86vw, 320px);
+                max-width: 320px;
+                padding: max(0px, env(safe-area-inset-top)) 12px 12px;
+                background: linear-gradient(180deg, #0f172a 0%, #162338 55%, #1e293b 100%);
+                border-right: 1px solid rgba(148, 163, 184, 0.16);
+                border-top-right-radius: 28px;
+                border-bottom-right-radius: 28px;
+                box-shadow: 0 24px 60px rgba(15, 23, 42, 0.32);
+                transform: translateX(-108%);
+                overflow-y: auto;
             }
             #sidebar-wrapper.active {
-                left: 0;
+                transform: translateX(0);
+            }
+            #sidebar-wrapper .list-group {
+                gap: 6px;
+            }
+            #sidebar-wrapper .list-group-item {
+                margin: 0 6px;
+                padding: 14px 16px;
+                border-radius: 16px;
+            }
+            #sidebar-wrapper .list-group-item:hover {
+                transform: translateX(2px);
+                background: rgba(255, 255, 255, 0.08);
+            }
+            #sidebar-wrapper .list-group-item.active {
+                background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
+                box-shadow: 0 14px 28px rgba(37, 99, 235, 0.35);
+            }
+            #sidebar-wrapper .dropdown > a {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(148, 163, 184, 0.14);
+            }
+            .nav-label {
+                padding: 18px 18px 10px;
+                color: #94a3b8;
+                font-size: 0.68rem;
             }
             .sidebar-overlay.active {
                 display: block;
             }
             .page-header {
                 padding: 15px 20px;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container-fluid { padding-left: 1rem !important; padding-right: 1rem !important; }
+            .card-footer {
+                flex-wrap: wrap;
+            }
+            .card-footer .btn {
+                flex: 1 1 auto;
             }
         }
     </style>

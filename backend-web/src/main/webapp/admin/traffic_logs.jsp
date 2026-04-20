@@ -16,23 +16,26 @@
     <style>
         /* Shared Layout Styles */
         html, body {
-            height: 100vh;
+            min-height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow-x: hidden;
             background-color: #f8fafc;
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         .app-container {
             display: flex;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            align-items: stretch;
         }
 
         #sidebar-wrapper {
             width: 280px;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             background: #1e293b;
             flex-shrink: 0;
             z-index: 1050;
@@ -62,6 +65,10 @@
             align-items: center;
         }
 
+        #sidebar-wrapper .list-group-item span {
+            display: inline !important;
+        }
+
         #sidebar-wrapper .list-group-item:hover {
             color: white;
             background: rgba(255, 255, 255, 0.05);
@@ -76,7 +83,8 @@
         .main-content {
             flex-grow: 1;
             min-width: 0;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             overflow-y: auto;
             position: relative;
         }
@@ -103,22 +111,103 @@
         .sidebar-overlay {
             display: none;
             position: fixed;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(2px);
+            inset: 0;
+            background: rgba(2, 6, 23, 0.58);
+            backdrop-filter: blur(10px);
             z-index: 1040;
-            top: 0;
-            left: 0;
         }
 
         .main-content::-webkit-scrollbar { width: 6px; }
         .main-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
         @media (max-width: 992px) {
-            #sidebar-wrapper { position: fixed; left: -280px; }
-            #sidebar-wrapper.active { left: 0; }
+            #sidebar-wrapper {
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: min(86vw, 320px);
+                max-width: 320px;
+                padding: max(0px, env(safe-area-inset-top)) 12px 12px;
+                background: linear-gradient(180deg, #0f172a 0%, #162338 55%, #1e293b 100%);
+                border-right: 1px solid rgba(148, 163, 184, 0.16);
+                border-top-right-radius: 28px;
+                border-bottom-right-radius: 28px;
+                box-shadow: 0 24px 60px rgba(15, 23, 42, 0.32);
+                transform: translateX(-108%);
+                overflow-y: auto;
+            }
+            #sidebar-wrapper.active { transform: translateX(0); }
+            #sidebar-wrapper .list-group {
+                gap: 6px;
+            }
+            #sidebar-wrapper .list-group-item {
+                margin: 0 6px;
+                padding: 14px 16px;
+                border-radius: 16px;
+            }
+            #sidebar-wrapper .list-group-item:hover {
+                transform: translateX(2px);
+                background: rgba(255, 255, 255, 0.08);
+            }
+            #sidebar-wrapper .list-group-item.active {
+                background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
+                box-shadow: 0 14px 28px rgba(37, 99, 235, 0.35);
+            }
+            #sidebar-wrapper .dropdown > a {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(148, 163, 184, 0.14);
+            }
+            .nav-label {
+                padding: 18px 18px 10px;
+                color: #94a3b8;
+                font-size: 0.68rem;
+            }
             .sidebar-overlay.active { display: block; }
+            .page-header { padding: 15px 20px; flex-wrap: wrap; gap: 1rem; }
+        }
+
+        @media (max-width: 768px) {
+            .container-fluid { padding-left: 1rem !important; padding-right: 1rem !important; }
+            .mobile-stack-table thead {
+                display: none;
+            }
+            .mobile-stack-table,
+            .mobile-stack-table tbody,
+            .mobile-stack-table tr,
+            .mobile-stack-table td {
+                display: block;
+                width: 100%;
+            }
+            .mobile-stack-table tr {
+                padding: 1rem 1.25rem;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            .mobile-stack-table td {
+                border: 0 !important;
+                padding: 0.35rem 0 !important;
+                text-align: left !important;
+            }
+            .mobile-stack-table td::before {
+                content: attr(data-label);
+                display: block;
+                margin-bottom: 0.2rem;
+                color: #64748b;
+                font-size: 0.72rem;
+                font-weight: 700;
+                letter-spacing: 0.03em;
+                text-transform: uppercase;
+            }
+            .mobile-stack-table td:last-child {
+                padding-bottom: 0 !important;
+            }
+            .mobile-stack-table .text-truncate {
+                max-width: none !important;
+                white-space: normal;
+            }
+            .page-header .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -248,7 +337,7 @@
 
             <div class="log-table-card shadow-sm">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-hover align-middle mb-0 mobile-stack-table">
                         <thead class="bg-light text-muted small text-uppercase">
                             <tr>
                                 <th class="ps-4 py-3">ID</th>
@@ -287,12 +376,12 @@
                                         String badgeClass = type.equals("Announcement") ? "bg-info-subtle text-info" : "bg-warning-subtle text-dark";
                             %>
                             <tr>
-                                <td class="ps-4 text-muted small">#<%= rs.getInt("id") %></td>
-                                <td><span class="badge <%= badgeClass %> rounded-pill px-3 py-1"><%= type %></span></td>
-                                <td><div class="text-dark fw-medium text-truncate" style="max-width: 300px;"><%= rs.getString("content") %></div></td>
-                                <td><span class="text-muted small"><i class="fas fa-location-arrow me-1"></i> <%= rs.getString("target") %></span></td>
-                                <td class="text-muted small"><%= rs.getTimestamp("created_at") %></td>
-                                <td class="text-end pe-4"><span class="text-success fw-bold small"><i class="fas fa-check-circle me-1"></i> Logged</span></td>
+                                <td class="ps-4 text-muted small" data-label="ID">#<%= rs.getInt("id") %></td>
+                                <td data-label="Type"><span class="badge <%= badgeClass %> rounded-pill px-3 py-1"><%= type %></span></td>
+                                <td data-label="Content"><div class="text-dark fw-medium text-truncate" style="max-width: 300px;"><%= rs.getString("content") %></div></td>
+                                <td data-label="Target"><span class="text-muted small"><i class="fas fa-location-arrow me-1"></i> <%= rs.getString("target") %></span></td>
+                                <td class="text-muted small" data-label="Timestamp"><%= rs.getTimestamp("created_at") %></td>
+                                <td class="text-end pe-4" data-label="Status"><span class="text-success fw-bold small"><i class="fas fa-check-circle me-1"></i> Logged</span></td>
                             </tr>
                             <%
                                     }

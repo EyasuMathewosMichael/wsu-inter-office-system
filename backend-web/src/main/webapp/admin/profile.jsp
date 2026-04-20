@@ -44,28 +44,32 @@
     <style>
         /* Viewport & App Layout */
         html, body {
-            height: 100vh;
+            min-height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow-x: hidden;
             background-color: #f8fafc;
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         .app-container {
             display: flex;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            align-items: stretch;
         }
 
         #sidebar-wrapper {
             width: 280px;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             background: #1e293b;
             flex-shrink: 0;
             z-index: 1050;
             display: flex;
             flex-direction: column;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .nav-label {
@@ -75,6 +79,7 @@
             font-weight: 700;
             color: #64748b;
             padding: 20px 25px 10px;
+            display: block !important;
         }
 
         #sidebar-wrapper .list-group-item {
@@ -88,15 +93,39 @@
             align-items: center;
         }
 
+        #sidebar-wrapper .list-group-item span {
+            display: inline !important;
+        }
+
         #sidebar-wrapper .list-group-item:hover { color: white; background: rgba(255, 255, 255, 0.05); }
         #sidebar-wrapper .list-group-item.active { background: #3b82f6 !important; color: white !important; }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.58);
+            backdrop-filter: blur(10px);
+            z-index: 1040;
+        }
 
         .main-content {
             flex-grow: 1;
             min-width: 0;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             overflow-y: auto;
             position: relative;
+        }
+
+        .page-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px 40px;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .profile-img-container { position: relative; display: inline-block; }
@@ -130,6 +159,76 @@
         #resToast .toast-body,
         #resToast .btn-close {
             color: inherit;
+        }
+
+        @media (max-width: 992px) {
+            #sidebar-wrapper {
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: min(86vw, 320px);
+                max-width: 320px;
+                padding: max(0px, env(safe-area-inset-top)) 12px 12px;
+                background: linear-gradient(180deg, #0f172a 0%, #162338 55%, #1e293b 100%);
+                border-right: 1px solid rgba(148, 163, 184, 0.16);
+                border-top-right-radius: 28px;
+                border-bottom-right-radius: 28px;
+                box-shadow: 0 24px 60px rgba(15, 23, 42, 0.32);
+                transform: translateX(-108%);
+                overflow-y: auto;
+            }
+            #sidebar-wrapper.active {
+                transform: translateX(0);
+            }
+            #sidebar-wrapper .list-group {
+                gap: 6px;
+            }
+            #sidebar-wrapper .list-group-item {
+                margin: 0 6px;
+                padding: 14px 16px;
+                border-radius: 16px;
+            }
+            #sidebar-wrapper .list-group-item:hover {
+                transform: translateX(2px);
+                background: rgba(255, 255, 255, 0.08);
+            }
+            #sidebar-wrapper .list-group-item.active {
+                background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
+                box-shadow: 0 14px 28px rgba(37, 99, 235, 0.35);
+            }
+            #sidebar-wrapper .dropdown > a {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(148, 163, 184, 0.14);
+            }
+            .nav-label {
+                padding: 18px 18px 10px;
+                color: #94a3b8;
+                font-size: 0.68rem;
+            }
+            .sidebar-overlay.active {
+                display: block;
+            }
+            .page-header {
+                padding: 15px 20px;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-actions {
+                flex-direction: column-reverse;
+                align-items: stretch !important;
+                gap: 0.75rem;
+            }
+            .profile-actions .btn {
+                width: 100%;
+            }
+            .toast-container {
+                left: 0;
+                right: 0;
+            }
         }
     </style>
 </head>
@@ -174,6 +273,7 @@
 %>
 
 <div class="app-container">
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
     <%-- Sidebar Fragment --%>
        <% String currentUri = request.getRequestURI(); %>
        <%@ include file="sidebar_profile.jspf" %>
@@ -233,9 +333,20 @@
            </div>
        </div>
 
-    <%-- Main Content --%>
     <main class="main-content">
-        <div class="container py-5">
+        <header class="page-header d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <button class="btn btn-link text-dark d-lg-none me-3 p-0" id="hamburger-menu">
+                    <i class="fas fa-bars fa-lg"></i>
+                </button>
+                <div>
+                    <h3 class="fw-bold mb-0 text-dark">My Profile</h3>
+                    <p class="text-muted small mb-0 d-none d-md-block">Update your administrator details and account security</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="container py-4 py-lg-5">
             <div class="row justify-content-center">
                 <div class="col-md-10 col-lg-8">
                     <div class="card shadow-sm overflow-hidden border-0">
@@ -281,7 +392,7 @@
                                     </div>
                                 </div>
 
-                                <div class="mt-5 d-flex justify-content-between align-items-center">
+                                <div class="mt-5 d-flex justify-content-between align-items-center profile-actions">
                                     <a href="dashboard.jsp" class="text-decoration-none text-muted small"><i class="fas fa-chevron-left me-1"></i> Back to Dashboard</a>
                                     <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-bold shadow-sm" id="saveBtn">
                                         <span class="spinner-border spinner-border-sm loading-spinner me-2"></span> Save Changes
@@ -304,6 +415,22 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const hamburgerMenu = document.getElementById('hamburger-menu');
+        const closeSidebar = document.getElementById('close-sidebar');
+        const sidebar = document.getElementById('sidebar-wrapper');
+        const overlay = document.getElementById('sidebar-overlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        if (hamburgerMenu) hamburgerMenu.addEventListener('click', toggleSidebar);
+        if (closeSidebar) closeSidebar.addEventListener('click', toggleSidebar);
+        if (overlay) overlay.addEventListener('click', toggleSidebar);
+    });
+
     // Local Image Preview
     document.getElementById('profile_pic_input').onchange = function () {
         const [file] = this.files;

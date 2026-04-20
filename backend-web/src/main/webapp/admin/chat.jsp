@@ -20,24 +20,27 @@
     <style>
         /* Global Viewport Reset */
         html, body {
-            height: 100vh;
+            min-height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow-x: hidden;
             background-color: #f8fafc;
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         .app-container {
             display: flex;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            align-items: stretch;
         }
 
         /* Sidebar Styling */
         #sidebar-wrapper {
             width: 280px;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             background: #1e293b;
             flex-shrink: 0;
             z-index: 1050;
@@ -53,6 +56,7 @@
             font-weight: 700;
             color: #64748b;
             padding: 20px 25px 10px;
+            display: block !important;
         }
 
         #sidebar-wrapper .list-group-item {
@@ -62,6 +66,17 @@
             padding: 12px 25px;
             transition: all 0.2s;
             font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        #sidebar-wrapper .list-group-item span {
+            display: inline !important;
+        }
+
+        #sidebar-wrapper .list-group-item:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         #sidebar-wrapper .list-group-item.active {
@@ -70,13 +85,24 @@
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
 
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.58);
+            backdrop-filter: blur(10px);
+            z-index: 1040;
+        }
+
         /* Main Content & Chat Layout */
         .main-content {
             flex-grow: 1;
             min-width: 0;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .page-header-sticky {
@@ -95,6 +121,18 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.06);
             border: 1px solid #e2e8f0;
             overflow: hidden;
+        }
+
+        .chat-mobile-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.35);
+            z-index: 110;
+        }
+
+        .chat-mobile-overlay.active {
+            display: block;
         }
 
         .staff-sidebar {
@@ -273,17 +311,77 @@
         }
 
         @media (max-width: 992px) {
-            #sidebar-wrapper { position: fixed; left: -280px; }
-            #sidebar-wrapper.active { left: 0; }
+            #sidebar-wrapper {
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: min(86vw, 320px);
+                max-width: 320px;
+                padding: max(0px, env(safe-area-inset-top)) 12px 12px;
+                background: linear-gradient(180deg, #0f172a 0%, #162338 55%, #1e293b 100%);
+                border-right: 1px solid rgba(148, 163, 184, 0.16);
+                border-top-right-radius: 28px;
+                border-bottom-right-radius: 28px;
+                box-shadow: 0 24px 60px rgba(15, 23, 42, 0.32);
+                transform: translateX(-108%);
+                overflow-y: auto;
+            }
+            #sidebar-wrapper.active { transform: translateX(0); }
+            #sidebar-wrapper .list-group {
+                gap: 6px;
+            }
+            #sidebar-wrapper .list-group-item {
+                margin: 0 6px;
+                padding: 14px 16px;
+                border-radius: 16px;
+            }
+            #sidebar-wrapper .list-group-item:hover {
+                transform: translateX(2px);
+                background: rgba(255, 255, 255, 0.08);
+            }
+            #sidebar-wrapper .list-group-item.active {
+                background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
+                box-shadow: 0 14px 28px rgba(37, 99, 235, 0.35);
+            }
+            #sidebar-wrapper .dropdown > a {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(148, 163, 184, 0.14);
+            }
+            .nav-label {
+                padding: 18px 18px 10px;
+                color: #94a3b8;
+                font-size: 0.68rem;
+            }
+            .sidebar-overlay.active { display: block; }
+            .page-header-sticky { padding: 1rem 1.25rem; }
+            .admin-chat-layout {
+                margin: 0.75rem;
+                min-height: calc(100dvh - 110px);
+            }
             .staff-sidebar {
                 position: absolute;
                 left: 0;
                 top: 0;
-                height: 100%;
-                z-index: 100;
+                bottom: 0;
+                width: min(88vw, 320px);
+                max-width: 88vw;
+                z-index: 120;
                 background: white;
+                box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+                transition: transform 0.25s ease;
             }
             .staff-sidebar.hidden-mobile { transform: translateX(-110%); }
+            #chatDisplay { padding: 1rem; }
+            .chat-input-wrapper { padding: 1rem; }
+            .msg-bubble-web { max-width: 92%; }
+            #replyPreview { left: 12px; right: 12px; bottom: 82px; }
+        }
+
+        @media (max-width: 768px) {
+            .admin-chat-layout { margin: 0.5rem; border-radius: 18px; }
+            .page-header-sticky { padding: 0.9rem 1rem; }
+            .chat-input-wrapper form { gap: 0.75rem !important; }
         }
     </style>
 </head>
@@ -361,6 +459,7 @@
         </div>
 
         <div class="admin-chat-layout">
+            <div class="chat-mobile-overlay d-lg-none" id="chat-mobile-overlay"></div>
             <div class="staff-sidebar hidden-mobile" id="staffSidebar">
                 <div class="p-4 border-bottom">
                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -485,17 +584,26 @@
     document.addEventListener('DOMContentLoaded', () => {
         const modalEl = document.getElementById('editMsgModal');
         if (modalEl) editModal = new bootstrap.Modal(modalEl);
+        const appSidebar = document.getElementById('sidebar-wrapper');
+        const appOverlay = document.getElementById('sidebar-overlay');
+        const closeSidebar = document.getElementById('close-sidebar');
+        const chatOverlay = document.getElementById('chat-mobile-overlay');
 
-        document.getElementById('sidebar-overlay')?.addEventListener('click', () => {
-            document.getElementById('sidebar-wrapper').classList.remove('active');
-            document.getElementById('sidebar-overlay').classList.remove('active');
+        appOverlay?.addEventListener('click', () => {
+            appSidebar.classList.remove('active');
+            appOverlay.classList.remove('active');
         });
+        closeSidebar?.addEventListener('click', () => {
+            appSidebar.classList.remove('active');
+            appOverlay.classList.remove('active');
+        });
+        chatOverlay?.addEventListener('click', () => setStaffListOpen(false));
 
         const hamburgerMenu = document.getElementById('hamburger-menu');
         if (hamburgerMenu) {
             hamburgerMenu.addEventListener('click', () => {
-                document.getElementById('sidebar-wrapper').classList.add('active');
-                document.getElementById('sidebar-overlay').classList.add('active');
+                appSidebar.classList.add('active');
+                appOverlay.classList.add('active');
             });
         }
 
@@ -528,10 +636,29 @@
                 } catch (err) { console.error("Send error", err); }
             };
         }
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 992) {
+                document.getElementById('staffSidebar').classList.remove('hidden-mobile');
+                chatOverlay?.classList.remove('active');
+            }
+        });
     });
 
+    function setStaffListOpen(open) {
+        const staffSidebar = document.getElementById('staffSidebar');
+        const chatOverlay = document.getElementById('chat-mobile-overlay');
+        const shouldOpen = typeof open === 'boolean' ? open : staffSidebar.classList.contains('hidden-mobile');
+        staffSidebar.classList.toggle('hidden-mobile', !shouldOpen);
+        if (window.innerWidth <= 992 && chatOverlay) {
+            chatOverlay.classList.toggle('active', shouldOpen);
+        } else if (chatOverlay) {
+            chatOverlay.classList.remove('active');
+        }
+    }
+
     function toggleStaffList() {
-        document.getElementById('staffSidebar').classList.toggle('hidden-mobile');
+        setStaffListOpen();
     }
 
     function filterStaff() {
@@ -553,7 +680,7 @@
         document.getElementById('activeStaffName').innerText = name;
         document.getElementById('activeStaffDept').innerText = dept;
         loadMessages(true);
-        if (window.innerWidth <= 992) toggleStaffList();
+        if (window.innerWidth <= 992) setStaffListOpen(false);
     }
 
     async function loadMessages(forceScroll = false) {
