@@ -9,6 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
+SCREENSHOTS = DOCS / "screenshots"
 LOGO_PATH = ROOT / "backend-web" / "src" / "main" / "webapp" / "assets" / "img" / "wsu_logo.png"
 
 PAGE_SIZE = (3508, 2480)  # A4 landscape at 300 DPI
@@ -170,6 +171,15 @@ def create_page() -> tuple[Image.Image, ImageDraw.ImageDraw]:
     return image, draw
 
 
+def save_preview(image: Image.Image, output: Path, max_width: int = 1800) -> None:
+    output.parent.mkdir(parents=True, exist_ok=True)
+    preview = image.convert("RGB")
+    if preview.width > max_width:
+        ratio = max_width / preview.width
+        preview = preview.resize((int(preview.width * ratio), int(preview.height * ratio)), Image.Resampling.LANCZOS)
+    preview.save(output, format="PNG", optimize=True)
+
+
 def use_case_ellipse(draw: ImageDraw.ImageDraw, center: tuple[int, int], size: tuple[int, int], text: str, fill: str) -> None:
     x, y = center
     w, h = size
@@ -237,7 +247,8 @@ def generate_architecture_pdf() -> None:
         ],
     )
     draw_footer(draw, "Page 1 of 2")
-    pages.append(image.convert("RGB"))
+    page_one = image.convert("RGB")
+    pages.append(page_one)
 
     # Page 2: request and module flow
     image, draw = create_page()
@@ -283,10 +294,13 @@ def generate_architecture_pdf() -> None:
         y += 145
 
     draw_footer(draw, "Page 2 of 2")
-    pages.append(image.convert("RGB"))
+    page_two = image.convert("RGB")
+    pages.append(page_two)
 
     output = DOCS / "System_Architecture.pdf"
     pages[0].save(output, save_all=True, append_images=pages[1:], resolution=300.0)
+    save_preview(page_one, SCREENSHOTS / "system-architecture-overview.png")
+    save_preview(page_two, SCREENSHOTS / "system-architecture-flow.png")
 
 
 def generate_use_case_pdf() -> None:
@@ -329,7 +343,8 @@ def generate_use_case_pdf() -> None:
         connect_actor(draw, (3170, 1080), target)
 
     draw_footer(draw, "Page 1 of 4")
-    pages.append(image.convert("RGB"))
+    overview_page = image.convert("RGB")
+    pages.append(overview_page)
 
     def actor_page(title: str, actor_label: str, subtitle: str, use_cases: list[str], fill: str, page_label: str) -> Image.Image:
         image, draw = create_page()
@@ -368,66 +383,67 @@ def generate_use_case_pdf() -> None:
         draw_footer(draw, page_label)
         return image.convert("RGB")
 
-    pages.append(
-        actor_page(
-            "Admin Use Cases",
-            "Admin",
-            "Administrative interactions through the web portal",
-            [
-                "Sign in to admin portal",
-                "Manage users",
-                "Create / edit announcements",
-                "Use admin chat",
-                "View traffic logs",
-                "Update admin profile",
-            ],
-            COLORS["soft_blue"],
-            "Page 2 of 4",
-        )
+    admin_page = actor_page(
+        "Admin Use Cases",
+        "Admin",
+        "Administrative interactions through the web portal",
+        [
+            "Sign in to admin portal",
+            "Manage users",
+            "Create / edit announcements",
+            "Use admin chat",
+            "View traffic logs",
+            "Update admin profile",
+        ],
+        COLORS["soft_blue"],
+        "Page 2 of 4",
     )
+    pages.append(admin_page)
 
-    pages.append(
-        actor_page(
-            "Dept Head Use Cases",
-            "Dept Head",
-            "Department-level interactions through the desktop client",
-            [
-                "Sign in to desktop",
-                "View dashboard overview",
-                "Create tasks",
-                "Edit / delete tasks",
-                "Review staff submissions",
-                "Acknowledge & close tasks",
-                "Post department announcements",
-                "Direct and department chat",
-                "Update profile & password",
-            ],
-            COLORS["soft_teal"],
-            "Page 3 of 4",
-        )
+    dept_head_page = actor_page(
+        "Dept Head Use Cases",
+        "Dept Head",
+        "Department-level interactions through the desktop client",
+        [
+            "Sign in to desktop",
+            "View dashboard overview",
+            "Create tasks",
+            "Edit / delete tasks",
+            "Review staff submissions",
+            "Acknowledge & close tasks",
+            "Post department announcements",
+            "Direct and department chat",
+            "Update profile & password",
+        ],
+        COLORS["soft_teal"],
+        "Page 3 of 4",
     )
+    pages.append(dept_head_page)
 
-    pages.append(
-        actor_page(
-            "Staff Use Cases",
-            "Staff",
-            "Operational staff interactions through the desktop client",
-            [
-                "Sign in to desktop",
-                "View assigned tasks",
-                "Submit task reply",
-                "Upload completion file",
-                "Read department announcements",
-                "Direct and department chat",
-                "Update profile & password",
-            ],
-            COLORS["soft_gold"],
-            "Page 4 of 4",
-        )
+    staff_page = actor_page(
+        "Staff Use Cases",
+        "Staff",
+        "Operational staff interactions through the desktop client",
+        [
+            "Sign in to desktop",
+            "View assigned tasks",
+            "Submit task reply",
+            "Upload completion file",
+            "Read department announcements",
+            "Direct and department chat",
+            "Update profile & password",
+        ],
+        COLORS["soft_gold"],
+        "Page 4 of 4",
     )
+    pages.append(staff_page)
 
     output = DOCS / "Use_Case_Diagrams.pdf"
     pages[0].save(output, save_all=True, append_images=pages[1:], resolution=300.0)
+    save_preview(overview_page, SCREENSHOTS / "use-case-overview.png")
+    save_preview(admin_page, SCREENSHOTS / "use-case-admin.png")
+    save_preview(dept_head_page, SCREENSHOTS / "use-case-dept-head.png")
+    save_preview(staff_page, SCREENSHOTS / "use-case-staff.png")
 
 
 def main() -> None:

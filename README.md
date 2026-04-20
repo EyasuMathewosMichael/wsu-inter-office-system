@@ -1,23 +1,67 @@
 # WSU Inter-Office Communication System
 
-This repository contains a university inter-office communication system with:
+Inter-Office Communication System for Wolaita Sodo University, built with a JSP/Tomcat backend and a JavaFX desktop client.
 
-- `backend-web`: JSP/Servlet-style web backend and admin portal
-- `frontend-desktop`: JavaFX desktop app for department heads and staff
-- `docs`: system documentation, diagrams, and SQL dump
+## Overview
 
-## Main Modules
+This project supports day-to-day communication and coordination across university offices. It combines:
 
-### `backend-web`
-- Admin web portal
-- Authentication APIs
-- announcements, chat, tasks, profile, and password reset endpoints
-- MySQL-backed JSP pages deployed on Tomcat
+- a web-based admin portal for user and system administration
+- a JavaFX desktop application for department heads and staff
+- a shared backend that serves HTML views, JSON APIs, file uploads, and password reset workflows
 
-### `frontend-desktop`
-- JavaFX desktop client
-- role-based dashboard for `Dept Head` and `Staff`
-- chat, tasks, announcements, and profile management
+## Role Model
+
+- `Admin`: uses the web portal only
+- `Dept Head`: uses the desktop client
+- `Staff`: uses the desktop client
+
+## Core Features
+
+- Role-based authentication
+- Admin user management
+- Task assignment, review, and acknowledgement
+- Department announcements
+- Office chat with file attachments
+- Profile management with profile photo support
+- Password reset through personal email
+- Traffic log viewing for admin users
+
+## Architecture
+
+- `backend-web`: JSP-based web application deployed on Apache Tomcat
+- `frontend-desktop`: JavaFX client for operational users
+- `MySQL / MariaDB`: relational data store
+- `SMTP`: email delivery for password reset links
+
+Main runtime base URL:
+
+```text
+http://localhost:8080/backend-web
+```
+
+Primary web entry points:
+
+- `http://localhost:8080/backend-web/index.jsp`
+- `http://localhost:8080/backend-web/admin/login.jsp`
+
+## Documentation Previews
+
+### System Architecture
+
+![System Architecture Overview](docs/screenshots/system-architecture-overview.png)
+
+### Use Case Overview
+
+![Use Case Overview](docs/screenshots/use-case-overview.png)
+
+### Actor-Specific Use Cases
+
+![Admin Use Cases](docs/screenshots/use-case-admin.png)
+
+![Dept Head Use Cases](docs/screenshots/use-case-dept-head.png)
+
+![Staff Use Cases](docs/screenshots/use-case-staff.png)
 
 ## Project Structure
 
@@ -31,50 +75,49 @@ README.md
 ## Local Setup
 
 ### Backend
-1. Install Java and Tomcat.
-2. Create/import the MySQL database using:
-   `docs/inter_office_db (4).sql`
-3. Deploy `backend-web` to Tomcat so it runs under:
-   `http://localhost:8080/backend-web`
-4. Configure password reset email in:
-   `backend-web/src/main/webapp/WEB-INF/mail.properties`
-   Start from:
-   `backend-web/src/main/webapp/WEB-INF/mail.properties.example`
+
+1. Install Java and Apache Tomcat.
+2. Create or import the database using `docs/inter_office_db (4).sql`.
+3. Deploy `backend-web` to Tomcat under `http://localhost:8080/backend-web`.
+4. Configure password reset email in `backend-web/src/main/webapp/WEB-INF/mail.properties`.
+5. Start from `backend-web/src/main/webapp/WEB-INF/mail.properties.example` for the mail template.
 
 ### Desktop
+
 1. Install Java 17.
 2. Open `frontend-desktop` in your IDE.
-3. Make sure the backend is running at:
-   `http://localhost:8080/backend-web`
-4. Launch the JavaFX app from `MainApp.java`.
+3. Confirm the backend is reachable at `http://localhost:8080/backend-web`.
+4. Run the JavaFX client from `frontend-desktop/src/main/java/com/frontenddesktop/MainApp.java`.
+
+## Documentation
+
+- [System Documentation](docs/SYSTEM_DOCUMENTATION.md)
+- [System Architecture PDF](docs/System_Architecture.pdf)
+- [Use Case Diagrams PDF](docs/Use_Case_Diagrams.pdf)
+- [Release Notes Draft](docs/RELEASE_NOTES_v1.0.0.md)
+
+The diagram assets can be regenerated with:
+
+```powershell
+python docs/generate_diagram_pdfs.py
+```
 
 ## Security Notes
 
 - Do not commit real SMTP credentials.
 - Do not commit live Tomcat deployment files.
 - Do not commit generated packaging output or built artifacts.
-- `mail.properties` is ignored by Git on purpose. Keep a local copy only.
+- `mail.properties` is intentionally ignored by Git and should stay local.
 
-## GitHub Upload Steps
+## Repository Status
 
-If Git is installed on your machine, run these commands from the project root:
+This repository currently includes:
 
-```powershell
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-git push -u origin main
-```
+- source code for both backend and desktop clients
+- documentation markdown and PDF diagrams
+- SQL schema/data dump used by the system
+- GitHub-ready documentation previews for the main architectural diagrams
 
-If GitHub asks whether to add a README or `.gitignore`, choose **no** because this repository already includes them.
+## Author
 
-## Documentation
-
-See:
-
-- [System Documentation](docs/SYSTEM_DOCUMENTATION.md)
-- `docs/System_Architecture.pdf`
-- `docs/Use_Case_Diagrams.pdf`
-- `docs/generate_diagram_pdfs.py` can regenerate the PDF diagrams from the current repository documentation baseline.
+Eyasu Mathewos Michael
