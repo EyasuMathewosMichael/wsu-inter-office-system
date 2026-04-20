@@ -1,0 +1,9 @@
+# Password reset mail configuration
+# Copy this file to mail.properties on your local machine and fill in real values.
+
+smtp.host=smtp.gmail.com
+smtp.port=465
+smtp.username=your-personal-email@gmail.com
+smtp.password=your-google-app-password
+smtp.from_email=your-personal-email@gmail.com
+smtp.from_name=WSU IOCS

@@ -1,0 +1,40 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.iml
+
+# Java / Maven
+target/
+out/
+*.class
+*.log
+
+# Desktop packaging outputs
+frontend-desktop/packaging/output/
+frontend-desktop/packaging/output-*/
+frontend-desktop/packaging/input/
+frontend-desktop/packaging/lib/
+frontend-desktop/packaging/*.jar
+frontend-desktop/packaging/*.exe
+
+# Local Tomcat / deployment copies
+backend-web/target/
+backend-web/src/main/webapp/assets/uploads/
+backend-web/src/main/webapp/uploads/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.orig
+
+# Runtime caches
+.openjfx/
+.mvn/wrapper/maven-wrapper.jar
+
+# Sensitive local configuration
+backend-web/src/main/webapp/WEB-INF/mail.properties
+

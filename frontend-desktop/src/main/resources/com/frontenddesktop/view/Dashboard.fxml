@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.frontenddesktop.controller.DashboardController"
+            prefHeight="750.0" prefWidth="1100.0"
+            style="-fx-background-color: #f8fafc;">
+
+    <top>
+        <Region prefHeight="5.0" style="-fx-background-color: transparent;" />
+    </top>
+
+    <left>
+        <VBox spacing="15" prefWidth="260" styleClass="sidebar">
+            <padding><Insets top="40" right="0" bottom="30" left="0"/></padding>
+
+            <VBox alignment="CENTER" spacing="10" style="-fx-padding: 0 20 30 20;">
+                <StackPane>
+                    <Circle radius="35" fill="#334155"/>
+                    <ImageView fx:id="imgSidebarAvatar" fitWidth="70" fitHeight="70" preserveRatio="false" visible="false"/>
+                    <Text fx:id="txtSidebarAvatarInitials" text="??" style="-fx-font-size: 24px; -fx-fill: white; -fx-font-weight: bold;"/>
+                    <Circle fx:id="statusDot" radius="8" fill="#2ecc71" stroke="#1e293b" strokeWidth="2">
+                        <StackPane.margin><Insets top="45" left="45"/></StackPane.margin>
+                    </Circle>
+                </StackPane>
+                <VBox alignment="CENTER">
+                    <Text fx:id="txtUserName" text="User Name" styleClass="sidebar-title" style="-fx-font-size: 18px;"/>
+                    <Text fx:id="txtUserRole" text="Role" style="-fx-fill: #94a3b8; -fx-font-size: 13px;"/>
+                </VBox>
+            </VBox>
+
+            <Separator opacity="0.1" style="-fx-background-color: white;">
+                <VBox.margin><Insets left="20" right="20"/></VBox.margin>
+            </Separator>
+
+            <VBox spacing="5" VBox.vgrow="ALWAYS">
+                <Button fx:id="btnTasks" text="Dashboard" onAction="#loadTaskView"
+                        styleClass="nav-button" maxWidth="Infinity" />
+
+                <Button fx:id="btnSidebarTasks" text="Tasks" onAction="#loadTasksSection"
+                        styleClass="nav-button" maxWidth="Infinity" />
+
+                <Button fx:id="btnSidebarAnnouncements" text="Announcements" onAction="#loadAnnouncementsSection"
+                        styleClass="nav-button" maxWidth="Infinity" />
+
+                <StackPane alignment="CENTER_RIGHT">
+                    <Button fx:id="btnChat" text="Office Chat" onAction="#loadChatView"
+                            styleClass="nav-button" maxWidth="Infinity" />
+                    <Circle fx:id="chatNotificationDot" radius="5" fill="#ef4444" visible="false">
+                        <StackPane.margin><Insets right="20"/></StackPane.margin>
+                    </Circle>
+                </StackPane>
+
+                <Button fx:id="btnProfile" text="Profile Settings" onAction="#loadProfileView"
+                        styleClass="nav-button" maxWidth="Infinity" />
+            </VBox>
+
+            <VBox style="-fx-padding: 0 20 0 20;">
+                <Button fx:id="logoutBtn" text="Logout" onAction="#handleLogout" maxWidth="Infinity"
+                        styleClass="logout-button">
+                    <effect><DropShadow blurType="GAUSSIAN" color="#00000033" height="10" radius="4.5" width="10"/></effect>
+                </Button>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane fx:id="contentArea">
+            <ScrollPane fx:id="overviewPane" fitToWidth="true" styleClass="scroll-pane">
+                <VBox spacing="30">
+                    <padding><Insets top="40" right="50" bottom="40" left="50"/></padding>
+
+                    <HBox alignment="CENTER_LEFT">
+                        <VBox spacing="5">
+                            <Label fx:id="lblGreeting" text="Welcome, User" style="-fx-font-size: 32px; -fx-font-weight: 800; -fx-text-fill: #1e293b;"/>
+                            <Label fx:id="lblOverviewSubtitle" text="Monitor your department's pulse and tasks." style="-fx-text-fill: #64748b; -fx-font-size: 15px;"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="25" fillHeight="true">
+                        <VBox prefWidth="240" maxWidth="Infinity" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 15; -fx-border-color: #e2e8f0; -fx-border-radius: 15;">
+                            <effect><DropShadow blurType="GAUSSIAN" color="#00000008" height="20" radius="9.5" width="20"/></effect>
+                            <Label fx:id="lblTaskCardTitle" text="Active Tasks" style="-fx-text-fill: #64748b; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+                            <Label fx:id="lblTaskCount" text="0" style="-fx-font-size: 36px; -fx-font-weight: 900; -fx-text-fill: #1e293b;"/>
+                        </VBox>
+                        <VBox prefWidth="240" maxWidth="Infinity" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 15; -fx-border-color: #e2e8f0; -fx-border-radius: 15;">
+                            <effect><DropShadow blurType="GAUSSIAN" color="#00000008" height="20" radius="9.5" width="20"/></effect>
+                            <Label fx:id="lblAnnouncementCardTitle" text="Announcements" style="-fx-text-fill: #64748b; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+                            <Label fx:id="lblAnnouncementCount" text="0" style="-fx-font-size: 36px; -fx-font-weight: 900; -fx-text-fill: #1e293b;"/>
+                        </VBox>
+                        <VBox prefWidth="240" maxWidth="Infinity" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 15; -fx-border-color: #e2e8f0; -fx-border-radius: 15;">
+                            <effect><DropShadow blurType="GAUSSIAN" color="#00000008" height="20" radius="9.5" width="20"/></effect>
+                            <Label fx:id="lblDepartmentCardTitle" text="Department" style="-fx-text-fill: #64748b; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+                            <Label fx:id="lblUserDept" text="N/A" wrapText="true" maxWidth="Infinity" minHeight="60.0" style="-fx-font-size: 24px; -fx-font-weight: 800; -fx-text-fill: #3b82f6;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </ScrollPane>
+
+            <ScrollPane fx:id="taskOverviewPane" fitToWidth="true" styleClass="scroll-pane" visible="false" managed="false">
+                <VBox spacing="25">
+                    <padding><Insets top="40" right="50" bottom="40" left="50"/></padding>
+
+                    <HBox alignment="CENTER_LEFT">
+                        <VBox spacing="5">
+                            <Label fx:id="lblTasksHeading" text="Tasks" style="-fx-font-size: 32px; -fx-font-weight: 800; -fx-text-fill: #1e293b;"/>
+                            <Label fx:id="lblTasksSubtitle" text="Track assignments, progress, and submissions." style="-fx-text-fill: #64748b; -fx-font-size: 15px;"/>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnCreateTask" text="+ New Task" onAction="#openTaskCreator"
+                                style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 8; -fx-cursor: hand;"
+                                visible="false" managed="${btnCreateTask.visible}"/>
+                    </HBox>
+
+                    <VBox spacing="15"
+                          style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 15; -fx-border-color: #e2e8f0; -fx-border-radius: 15;">
+                        <effect><DropShadow blurType="GAUSSIAN" color="#00000008" height="20" radius="9.5" width="20"/></effect>
+                        <Label text="Current Workload" style="-fx-font-weight: 900; -fx-font-size: 18px; -fx-text-fill: #1e293b;"/>
+                        <ScrollPane fitToWidth="true" minHeight="420" maxHeight="420" styleClass="scroll-pane">
+                            <VBox fx:id="taskContainer" spacing="12"/>
+                        </ScrollPane>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+
+            <ScrollPane fx:id="announcementOverviewPane" fitToWidth="true" styleClass="scroll-pane" visible="false" managed="false">
+                <VBox spacing="25">
+                    <padding><Insets top="40" right="50" bottom="40" left="50"/></padding>
+
+                    <HBox alignment="CENTER_LEFT">
+                        <VBox spacing="5">
+                            <Label fx:id="lblAnnouncementsHeading" text="Announcements" style="-fx-font-size: 32px; -fx-font-weight: 800; -fx-text-fill: #1e293b;"/>
+                            <Label fx:id="lblAnnouncementsSubtitle" text="Read department broadcasts and posted updates." style="-fx-text-fill: #64748b; -fx-font-size: 15px;"/>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <HBox spacing="12">
+                            <TextField fx:id="searchField" promptText="Search..." prefWidth="180"
+                                       style="-fx-background-radius: 10; -fx-background-color: #f1f5f9; -fx-padding: 8; -fx-border-color: #e2e8f0; -fx-border-radius: 10;"/>
+                            <Button fx:id="btnPostAnnouncement" text="Post News" onAction="#openAnnouncementCreator"
+                                    style="-fx-background-color: #8b5cf6; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 8; -fx-cursor: hand;"
+                                    visible="false" managed="${btnPostAnnouncement.visible}"/>
+                        </HBox>
+                    </HBox>
+
+                    <VBox spacing="15"
+                          style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 15; -fx-border-color: #e2e8f0; -fx-border-radius: 15;">
+                        <effect><DropShadow blurType="GAUSSIAN" color="#00000008" height="20" radius="9.5" width="20"/></effect>
+                        <Label text="Notice Board" style="-fx-font-weight: 900; -fx-font-size: 18px; -fx-text-fill: #1e293b;"/>
+                        <ScrollPane fitToWidth="true" minHeight="420" maxHeight="420" styleClass="scroll-pane">
+                            <VBox fx:id="announcementContainer" spacing="12"/>
+                        </ScrollPane>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+        </StackPane>
+    </center>
+</BorderPane>

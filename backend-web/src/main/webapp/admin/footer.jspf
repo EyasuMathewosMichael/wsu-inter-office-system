@@ -1,0 +1,19 @@
+<footer class="footer mt-auto py-3 bg-white border-top">
+    <div class="container-fluid px-4">
+        <div class="d-flex align-items-center justify-content-between small">
+            <div class="text-muted">
+                &copy; <%= new java.util.GregorianCalendar().get(java.util.Calendar.YEAR) %>
+                <strong>WSU School of Informatics</strong>. All rights reserved.
+            </div>
+            <div>
+                <span class="badge badge-dot bg-success me-1"></span>
+                <span class="text-muted">System Online</span>
+                <span class="mx-2 text-muted">|</span>
+                <a href="support.jsp" class="text-decoration-none text-primary">Help Desk</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<%-- Include the separate scripts fragment --%>
+<%@ include file="scripts.jspf" %>

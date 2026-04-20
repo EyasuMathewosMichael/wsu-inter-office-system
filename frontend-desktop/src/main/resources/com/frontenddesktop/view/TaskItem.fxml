@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox spacing="15" alignment="CENTER_LEFT"
+      style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-width: 1; -fx-effect: dropshadow(three-pass-box, rgba(15,23,42,0.05), 6, 0, 0, 2);"
+      xmlns:fx="http://javafx.com/fxml" fx:controller="com.frontenddesktop.controller.TaskItemController">
+    <padding><Insets top="12" right="15" bottom="12" left="15"/></padding>
+
+    <VBox HBox.hgrow="ALWAYS" spacing="5">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label fx:id="lblTitle" text="Task Title" style="-fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #1e293b;"/>
+            <Label fx:id="lblPriority" text="HIGH" style="-fx-font-size: 10px; -fx-text-fill: white; -fx-padding: 2 6; -fx-background-radius: 999;"/>
+        </HBox>
+
+        <Label fx:id="lblDescription" text="Instructions preview..."
+               wrapText="true" maxHeight="40" maxWidth="500"
+               style="-fx-text-fill: #64748b; -fx-font-size: 12px;"/>
+
+        <Label fx:id="lblDueDate" text="Due: 2026-02-20" style="-fx-text-fill: #94a3b8; -fx-font-size: 11px;"/>
+    </VBox>
+
+    <HBox spacing="8" alignment="CENTER_RIGHT">
+        <HBox fx:id="deptHeadControls" spacing="5" alignment="CENTER_LEFT">
+            <Button onAction="#handleEditTask" text="Edit"
+                    style="-fx-background-color: #dbeafe; -fx-cursor: hand; -fx-text-fill: #1d4ed8; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 6 10;">
+                <tooltip><Tooltip text="Edit Task"/></tooltip>
+            </Button>
+            <Button onAction="#handleDeleteTask" text="Delete"
+                    style="-fx-background-color: #fee2e2; -fx-cursor: hand; -fx-text-fill: #b91c1c; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 6 10;">
+                <tooltip><Tooltip text="Delete Task"/></tooltip>
+            </Button>
+        </HBox>
+
+        <Button fx:id="btnView" text="View" onAction="#handleViewFullDescription" visible="false" managed="false"
+                style="-fx-background-color: #f1f5f9; -fx-cursor: hand; -fx-background-radius: 6; -fx-text-fill: #334155; -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 6 10;"/>
+
+        <Button fx:id="btnDownload" text="File" onAction="#handleDownload"
+                style="-fx-background-color: #ecfeff; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #0f766e; -fx-background-radius: 6; -fx-padding: 6 10;"/>
+
+        <Button fx:id="btnReply" text="Reply" onAction="#handleReply"
+                style="-fx-background-color: #eef2ff; -fx-cursor: hand; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #4338ca; -fx-background-radius: 6; -fx-padding: 6 10;"/>
+
+        <ComboBox fx:id="statusCombo" prefWidth="110" style="-fx-font-size: 11px;"/>
+    </HBox>
+</HBox>

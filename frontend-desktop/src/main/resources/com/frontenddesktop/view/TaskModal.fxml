@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" prefWidth="500.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #dcdde1; -fx-border-radius: 10;"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.frontenddesktop.controller.TaskModalController">
+
+    <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
+
+    <Label fx:id="headerLabel" text="Assign New Task" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+    <Separator/>
+
+    <VBox spacing="12">
+        <VBox spacing="5">
+            <Label text="Task Subject" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="titleField" promptText="e.g., Gospel Sharing Campaign" style="-fx-padding: 8;"/>
+        </VBox>
+
+        <HBox spacing="15">
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="Assign To Staff" style="-fx-font-weight: bold;"/>
+                <ComboBox fx:id="staffComboBox" maxWidth="Infinity" style="-fx-padding: 5;"/>
+            </VBox>
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="Priority" style="-fx-font-weight: bold;"/>
+                <ComboBox fx:id="priorityComboBox" maxWidth="Infinity" style="-fx-padding: 5;"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="15">
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="Due Date" style="-fx-font-weight: bold;"/>
+                <DatePicker fx:id="dueDatePicker" maxWidth="Infinity" style="-fx-padding: 5;"/>
+            </VBox>
+        </HBox>
+
+        <VBox spacing="5">
+            <Label text="Instructions" style="-fx-font-weight: bold;"/>
+            <TextArea fx:id="descArea" prefHeight="70" wrapText="true" promptText="Describe the task details here..."/>
+        </VBox>
+    </VBox>
+
+    <VBox fx:id="creationAttachmentBox" spacing="5" style="-fx-background-color: #f9f9f9; -fx-padding: 10; -fx-background-radius: 5; -fx-border-color: #eeeeee;">
+        <Label text="Instructional Attachment" style="-fx-font-weight: bold; -fx-text-fill: #7f8c8d;"/>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button text="📎 Choose File" onAction="#handleFileSelection"
+                    style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-cursor: hand;"/>
+            <Label fx:id="lblFileName" text="No file attached" style="-fx-text-fill: #95a5a6; -fx-font-style: italic;"/>
+        </HBox>
+    </VBox>
+
+    <VBox fx:id="reviewSection" spacing="10" managed="false" visible="false"
+          style="-fx-background-color: #f0f9ff; -fx-padding: 15; -fx-background-radius: 8; -fx-border-color: #bae6fd;">
+        <Label text="Staff Submission" style="-fx-font-weight: bold; -fx-text-fill: #0369a1;"/>
+        <VBox spacing="3">
+            <Label text="Staff Reply:" style="-fx-font-size: 11px; -fx-text-fill: #64748b;"/>
+            <Label fx:id="lblStaffReply" text="Waiting for reply..." wrapText="true" style="-fx-font-style: italic;"/>
+        </VBox>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button text="📥 Download Submission" onAction="#handleDownloadSubmission"
+                    style="-fx-background-color: #0ea5e9; -fx-text-fill: white; -fx-cursor: hand; -fx-font-size: 12px;"/>
+            <Label fx:id="lblSubmissionFileName" text="No file submitted" style="-fx-text-fill: #94a3b8; -fx-font-size: 11px;"/>
+        </HBox>
+    </VBox>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+        <Button text="Cancel" onAction="#handleCancel" style="-fx-background-color: #ecf0f1; -fx-cursor: hand;"/>
+
+        <Button fx:id="btnSaveTask" text="Create Task" onAction="#handleSaveTask"
+                style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20; -fx-cursor: hand;"/>
+
+        <Button fx:id="btnAcknowledge" text="Acknowledge &amp; Close" onAction="#handleAcknowledge"
+                managed="false" visible="false"
+                style="-fx-background-color: #8b5cf6; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20; -fx-cursor: hand;"/>
+    </HBox>
+</VBox>

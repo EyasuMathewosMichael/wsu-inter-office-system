@@ -1,0 +1,100 @@
+/* Global Settings */
+.root {
+    -fx-font-family: "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #f8fafc; /* Slightly lighter for better contrast */
+}
+
+/* Sidebar Styling - Dark Professional Theme */
+.sidebar {
+    -fx-background-color: #1e293b; /* Refined Slate Blue/Dark Gray */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 15, 0, 0, 0);
+}
+
+.sidebar-title {
+    -fx-fill: #f8fafc;
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+}
+
+/* Navigation Buttons with Active Indicator */
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #94a3b8;
+    -fx-alignment: center-left;
+    -fx-cursor: hand;
+    -fx-padding: 12 15 12 25; /* Indented for cleaner look */
+    -fx-background-radius: 0;
+    /* Blue indicator bar on the left - hidden by default */
+    -fx-border-color: #3b82f6;
+    -fx-border-width: 0 0 0 0;
+}
+
+.nav-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-text-fill: #f8fafc;
+}
+
+/* The Active State Class - Triggered by Controller */
+.nav-button.active {
+    -fx-background-color: rgba(59, 130, 246, 0.1); /* Subtle blue tint */
+    -fx-text-fill: #3b82f6;
+    -fx-border-width: 0 0 0 4; /* Shows the blue bar on the left */
+    -fx-font-weight: bold;
+}
+
+/* Chat Bubbles & Components [cite: 2026-03-02] */
+.sent-bubble {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+    -fx-background-radius: 15 15 2 15;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(59, 130, 246, 0.2), 10, 0, 0, 2);
+}
+
+.received-bubble {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1e293b;
+    -fx-background-radius: 15 15 15 2;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.04), 8, 0, 0, 2);
+    -fx-border-color: #f1f5f9;
+    -fx-border-radius: 15 15 15 2;
+}
+
+.group-sender-name {
+    -fx-font-weight: 800;
+    -fx-font-size: 11px;
+    -fx-text-fill: #3b82f6;
+}
+
+.footer-timestamp {
+    -fx-font-size: 10px;
+    -fx-text-fill: #94a3b8;
+}
+
+/* ScrollPane Modernization */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 6;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 10;
+}
+
+/* Badges for Task Status [cite: 2026-01-21] */
+.badge-pending { -fx-background-color: #fffbeb; -fx-text-fill: #b45309; -fx-border-color: #fef3c7; -fx-border-radius: 6; -fx-padding: 2 8; }
+.badge-completed { -fx-background-color: #f0fdf4; -fx-text-fill: #15803d; -fx-border-color: #dcfce7; -fx-border-radius: 6; -fx-padding: 2 8; }
+.badge-urgent { -fx-background-color: #fef2f2; -fx-text-fill: #b91c1c; -fx-border-color: #fee2e2; -fx-border-radius: 6; -fx-padding: 2 8; }

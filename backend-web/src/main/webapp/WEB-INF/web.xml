@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                             http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <display-name>WSU School of Informatics - IOCS</display-name>
+
+    <servlet>
+        <servlet-name>SendMessageAPI</servlet-name>
+        <jsp-file>/api/send_message.jsp</jsp-file>
+        <multipart-config>
+            <max-file-size>52428800</max-file-size>
+            <max-request-size>104857600</max-request-size>
+            <file-size-threshold>0</file-size-threshold>
+        </multipart-config>
+    </servlet>
+
+    <servlet>
+        <servlet-name>SaveUserAPI</servlet-name>
+        <jsp-file>/api/save_user.jsp</jsp-file>
+        <multipart-config>
+            <max-file-size>5242880</max-file-size>
+            <max-request-size>10485760</max-request-size>
+        </multipart-config>
+    </servlet>
+
+    <servlet>
+        <servlet-name>UpdateUserAPI</servlet-name>
+        <jsp-file>/api/update_user.jsp</jsp-file>
+        <multipart-config>
+            <max-file-size>5242880</max-file-size>
+            <max-request-size>10485760</max-request-size>
+        </multipart-config>
+    </servlet>
+
+    <servlet>
+        <servlet-name>UpdateProfileAPI</servlet-name>
+        <jsp-file>/api/update_profile.jsp</jsp-file>
+        <multipart-config>
+            <max-file-size>5242880</max-file-size>
+            <max-request-size>10485760</max-request-size>
+            <file-size-threshold>0</file-size-threshold>
+        </multipart-config>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateUserProfilePhotoAPI</servlet-name>
+        <jsp-file>/api/update_user_profile_photo.jsp</jsp-file>
+        <multipart-config>
+            <max-file-size>5242880</max-file-size>
+            <max-request-size>10485760</max-request-size>
+            <file-size-threshold>0</file-size-threshold>
+        </multipart-config>
+    </servlet>
+    <servlet>
+        <servlet-name>TasksAPI</servlet-name>
+        <jsp-file>/api/tasks.jsp</jsp-file>
+        <multipart-config>
+            <max-file-size>52428800</max-file-size>
+            <max-request-size>104857600</max-request-size>
+            <file-size-threshold>0</file-size-threshold>
+        </multipart-config>
+    </servlet>
+    <servlet>
+        <servlet-name>AnnouncementsAPI</servlet-name>
+        <jsp-file>/api/announcements.jsp</jsp-file>
+        <multipart-config>
+            <max-file-size>52428800</max-file-size>
+            <max-request-size>104857600</max-request-size>
+            <file-size-threshold>0</file-size-threshold>
+        </multipart-config>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateAnnouncementAPI</servlet-name>
+        <jsp-file>/api/update_announcement.jsp</jsp-file>
+        <multipart-config>
+            <max-file-size>52428800</max-file-size>
+            <max-request-size>104857600</max-request-size>
+            <file-size-threshold>0</file-size-threshold>
+        </multipart-config>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SendMessageAPI</servlet-name>
+        <url-pattern>/api/send_message.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveUserAPI</servlet-name>
+        <url-pattern>/api/save_user.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUserAPI</servlet-name>
+        <url-pattern>/api/update_user.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProfileAPI</servlet-name>
+        <url-pattern>/api/update_profile.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUserProfilePhotoAPI</servlet-name>
+        <url-pattern>/api/update_user_profile_photo.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TasksAPI</servlet-name>
+        <url-pattern>/api/tasks.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AnnouncementsAPI</servlet-name>
+        <url-pattern>/api/announcements.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateAnnouncementAPI</servlet-name>
+        <url-pattern>/api/update_announcement.jsp</url-pattern>
+    </servlet-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/errors/404.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/errors/500.jsp</location>
+    </error-page>
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+</web-app>

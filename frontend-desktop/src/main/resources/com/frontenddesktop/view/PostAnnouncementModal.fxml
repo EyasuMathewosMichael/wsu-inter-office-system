@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" prefWidth="450.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #dcdde1; -fx-border-radius: 10;"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.frontenddesktop.controller.PostAnnouncementController">
+
+    <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
+
+    <Label text="Post Department Announcement" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+    <Separator/>
+
+    <VBox spacing="5">
+        <Label text="Announcement Title" style="-fx-font-weight: bold;"/>
+        <TextField fx:id="titleField" promptText="e.g., Upcoming Faculty Seminar" style="-fx-padding: 8;"/>
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="Message Content" style="-fx-font-weight: bold;"/>
+        <TextArea fx:id="contentArea" prefHeight="120" wrapText="true" promptText="Enter the announcement details here..." style="-fx-padding: 5;"/>
+    </VBox>
+
+    <VBox spacing="5" style="-fx-background-color: #f8f9fa; -fx-padding: 10; -fx-background-radius: 5; -fx-border-color: #e9ecef;">
+        <Label text="Add Attachment (Optional)" style="-fx-font-weight: bold; -fx-text-fill: #495057;"/>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button text="📎 Choose File" onAction="#handleFileSelection"
+                    style="-fx-background-color: #4b6584; -fx-text-fill: white; -fx-cursor: hand;"/>
+            <Label fx:id="lblFileName" text="No file selected" style="-fx-text-fill: #778ca3; -fx-font-style: italic;"/>
+        </HBox>
+    </VBox>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+        <Button text="Cancel" onAction="#handleCancel"
+                style="-fx-background-color: #f1f2f6; -fx-cursor: hand; -fx-padding: 8 15;"/>
+        <Button text="Broadcast to Staff" onAction="#handlePost"
+                style="-fx-background-color: #20bf6b; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20; -fx-cursor: hand;"/>
+    </HBox>
+</VBox>

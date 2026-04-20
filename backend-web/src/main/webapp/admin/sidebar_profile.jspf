@@ -1,0 +1,68 @@
+<%@ page import="java.sql.*" %>
+<%
+    String sidebarAdminName = "Administrator";
+    String sidebarAdminRole = "System Superuser";
+    String sidebarAdminPhoto = "admin-avatar.png";
+
+    Object sidebarAdminIdObj = session.getAttribute("admin_id");
+    if (sidebarAdminIdObj == null) {
+        sidebarAdminIdObj = session.getAttribute("user_id");
+    }
+
+    if (sidebarAdminIdObj != null) {
+        Connection sidebarConn = null;
+        PreparedStatement sidebarPs = null;
+        ResultSet sidebarRs = null;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            sidebarConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+            sidebarPs = sidebarConn.prepareStatement(
+                "SELECT full_name, role, profile_pic_path FROM users WHERE user_id = ?"
+            );
+            sidebarPs.setInt(1, Integer.parseInt(sidebarAdminIdObj.toString()));
+            sidebarRs = sidebarPs.executeQuery();
+
+            if (sidebarRs.next()) {
+                String dbFullName = sidebarRs.getString("full_name");
+                String dbRole = sidebarRs.getString("role");
+                String dbProfilePic = sidebarRs.getString("profile_pic_path");
+
+                if (dbFullName != null && !dbFullName.trim().isEmpty()) {
+                    sidebarAdminName = dbFullName.trim();
+                }
+
+                if (dbRole != null && !dbRole.trim().isEmpty()) {
+                    sidebarAdminRole = dbRole.trim();
+                }
+
+                if (dbProfilePic != null && !dbProfilePic.trim().isEmpty()) {
+                    String normalizedPic = dbProfilePic.replace("\\", "/").trim();
+                    String fileName = normalizedPic.substring(normalizedPic.lastIndexOf('/') + 1);
+                    if (fileName.matches("[a-zA-Z0-9._-]+")) {
+                        sidebarAdminPhoto = fileName;
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+        } finally {
+            if (sidebarRs != null) try { sidebarRs.close(); } catch (Exception ignored) {}
+            if (sidebarPs != null) try { sidebarPs.close(); } catch (Exception ignored) {}
+            if (sidebarConn != null) try { sidebarConn.close(); } catch (Exception ignored) {}
+        }
+    }
+
+    String sidebarAdminNameHtml = sidebarAdminName
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace("\"", "&quot;")
+        .replace("'", "&#39;");
+
+    String sidebarAdminRoleHtml = sidebarAdminRole
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace("\"", "&quot;")
+        .replace("'", "&#39;");
+%>
