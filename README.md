@@ -77,3 +77,4 @@ See:
 - [System Documentation](docs/SYSTEM_DOCUMENTATION.md)
 - `docs/System_Architecture.pdf`
 - `docs/Use_Case_Diagrams.pdf`
+- `docs/generate_diagram_pdfs.py` can regenerate the PDF diagrams from the current repository documentation baseline.
