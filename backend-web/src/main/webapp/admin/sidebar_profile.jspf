@@ -4,12 +4,39 @@
     String sidebarAdminRole = "System Superuser";
     String sidebarAdminPhoto = "admin-avatar.png";
 
+    String sessionSidebarName = (String) session.getAttribute("admin_name");
+    if (sessionSidebarName == null || sessionSidebarName.trim().isEmpty()) {
+        sessionSidebarName = (String) session.getAttribute("user_name");
+    }
+    if (sessionSidebarName != null && !sessionSidebarName.trim().isEmpty()) {
+        sidebarAdminName = sessionSidebarName.trim();
+    }
+
+    String sessionSidebarRole = (String) session.getAttribute("admin_role");
+    if (sessionSidebarRole == null || sessionSidebarRole.trim().isEmpty()) {
+        sessionSidebarRole = (String) session.getAttribute("user_role");
+    }
+    if (sessionSidebarRole != null && !sessionSidebarRole.trim().isEmpty()) {
+        sidebarAdminRole = sessionSidebarRole.trim();
+    }
+
+    String sessionSidebarPhoto = (String) session.getAttribute("user_pic");
+    if (sessionSidebarPhoto != null && !sessionSidebarPhoto.trim().isEmpty()) {
+        String normalizedPic = sessionSidebarPhoto.replace("\\", "/").trim();
+        String fileName = normalizedPic.substring(normalizedPic.lastIndexOf('/') + 1);
+        if (fileName.matches("[a-zA-Z0-9._-]+")) {
+            sidebarAdminPhoto = fileName;
+        }
+    }
+
     Object sidebarAdminIdObj = session.getAttribute("admin_id");
     if (sidebarAdminIdObj == null) {
         sidebarAdminIdObj = session.getAttribute("user_id");
     }
 
-    if (sidebarAdminIdObj != null) {
+    if (sidebarAdminIdObj != null &&
+        (sessionSidebarName == null || sessionSidebarName.trim().isEmpty() ||
+         sessionSidebarRole == null || sessionSidebarRole.trim().isEmpty())) {
         Connection sidebarConn = null;
         PreparedStatement sidebarPs = null;
         ResultSet sidebarRs = null;
@@ -29,10 +56,16 @@
 
                 if (dbFullName != null && !dbFullName.trim().isEmpty()) {
                     sidebarAdminName = dbFullName.trim();
+                    session.setAttribute("admin_name", sidebarAdminName);
+                    session.setAttribute("user_name", sidebarAdminName);
                 }
 
                 if (dbRole != null && !dbRole.trim().isEmpty()) {
                     sidebarAdminRole = dbRole.trim();
+                    if ("Admin".equalsIgnoreCase(dbRole.trim())) {
+                        session.setAttribute("admin_role", dbRole.trim());
+                    }
+                    session.setAttribute("user_role", dbRole.trim());
                 }
 
                 if (dbProfilePic != null && !dbProfilePic.trim().isEmpty()) {
@@ -40,6 +73,7 @@
                     String fileName = normalizedPic.substring(normalizedPic.lastIndexOf('/') + 1);
                     if (fileName.matches("[a-zA-Z0-9._-]+")) {
                         sidebarAdminPhoto = fileName;
+                        session.setAttribute("user_pic", fileName);
                     }
                 }
             }

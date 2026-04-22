@@ -50,6 +50,7 @@
             session.setAttribute("user_role", rs.getString("role"));
             session.setAttribute("user_department", rs.getString("department"));
             session.setAttribute("user_name", rs.getString("full_name"));
+            session.setAttribute("user_pic", rs.getString("profile_pic_path"));
 
             session.setMaxInactiveInterval(30 * 60);
 
