@@ -21,6 +21,9 @@ RUN mkdir -p webapps/ROOT \
     && cd webapps/ROOT \
     && jar -xf /tmp/backend-web.war \
     && cp -R . ../backend-web \
+    && mkdir -p META-INF ../backend-web/META-INF \
+    && printf '%s\n' '<Context><Resources allowLinking="true" /></Context>' > META-INF/context.xml \
+    && cp META-INF/context.xml ../backend-web/META-INF/context.xml \
     && rm /tmp/backend-web.war
 
 RUN mkdir -p /opt/render-seed \
