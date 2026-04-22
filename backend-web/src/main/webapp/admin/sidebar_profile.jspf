@@ -1,5 +1,4 @@
 <%@ page import="java.sql.*" %>
-<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%
     String sidebarAdminName = "Administrator";
     String sidebarAdminRole = "System Superuser";
