@@ -17,13 +17,14 @@ RUN rm -rf webapps/*
 
 COPY --from=build /app/target/backend-web.war /tmp/backend-web.war
 
-RUN mkdir -p webapps/backend-web \
-    && cd webapps/backend-web \
+RUN mkdir -p webapps/ROOT \
+    && cd webapps/ROOT \
     && jar -xf /tmp/backend-web.war \
+    && cp -R . ../backend-web \
     && rm /tmp/backend-web.war
 
 RUN mkdir -p /opt/render-seed \
-    && cp -R webapps/backend-web/assets/img /opt/render-seed/assets-img
+    && cp -R webapps/ROOT/assets/img /opt/render-seed/assets-img
 
 COPY docker/render-entrypoint.sh /usr/local/bin/render-entrypoint.sh
 

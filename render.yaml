@@ -6,7 +6,7 @@ services:
     dockerfilePath: ./Dockerfile
     plan: free
     autoDeploy: true
-    healthCheckPath: /backend-web/index.jsp
+    healthCheckPath: /index.jsp
     envVars:
       - key: UPLOAD_BASE_DIR
         value: /tmp/wsu-iocs
