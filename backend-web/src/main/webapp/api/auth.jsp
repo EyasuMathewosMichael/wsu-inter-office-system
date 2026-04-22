@@ -1,5 +1,6 @@
 <%@ page import="java.sql.*, org.json.JSONObject, org.mindrot.jbcrypt.BCrypt" %>
 <%@ include file="/WEB-INF/jspf/account_helpers.jspf" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private boolean isBcryptHash(String value) {
         return value != null && value.startsWith("$2");
@@ -11,8 +12,7 @@
     JSONObject json = new JSONObject();
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        Connection con = getDbConnection(application);
         ensureUsersPersonalEmailColumn(con);
 
         String query = "SELECT user_id, username, password, role, department, full_name, profile_pic_path, phone, bio, personal_email FROM users WHERE username=?";
@@ -85,3 +85,4 @@
     }
     out.print(json.toString());
 %>
+

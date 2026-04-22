@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, java.io.File, org.json.*" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private File resolveAnnouncementFile(String storedPath, String appRoot) {
         if (storedPath == null || storedPath.trim().isEmpty()) return null;
@@ -44,8 +45,7 @@
     PreparedStatement pstmtDelete = null;
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        conn = getDbConnection(application);
 
         pstmtFetch = conn.prepareStatement("SELECT poster_id, attachment_path FROM announcements WHERE announcement_id = ?");
         pstmtFetch.setInt(1, Integer.parseInt(announcementId));
@@ -86,3 +86,4 @@
         if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
     }
 %>
+

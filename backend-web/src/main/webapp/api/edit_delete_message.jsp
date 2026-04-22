@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, java.io.*, org.json.*" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private File resolveChatFile(String storedPath, String appRoot) {
         if (storedPath == null || storedPath.trim().isEmpty()) return null;
@@ -40,8 +41,7 @@
     int currentUserId = Integer.parseInt(sessionUser.toString());
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "")) {
+        try (Connection con = getDbConnection(application)) {
             if ("edit".equals(action)) {
                 PreparedStatement ps = con.prepareStatement("UPDATE chats SET message = ? WHERE chat_id = ? AND sender_id = ?");
                 ps.setString(1, newMessage);
@@ -92,3 +92,4 @@
     }
     out.print(json.toString());
 %>
+

@@ -1,0 +1,52 @@
+<%@ page import="java.io.File,java.io.FileInputStream,java.io.IOException,java.io.InputStream,java.sql.Connection,java.sql.DriverManager,java.sql.SQLException,java.util.Properties,javax.servlet.ServletContext" %>
+<%!
+    private Properties loadDbConfig(ServletContext context) throws IOException {
+        Properties props = new Properties();
+
+        props.setProperty("db.driver", "com.mysql.cj.jdbc.Driver");
+        props.setProperty("db.url", "jdbc:mysql://localhost:3306/inter_office_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
+        props.setProperty("db.username", "root");
+        props.setProperty("db.password", "");
+
+        String realPath = context.getRealPath("/WEB-INF/db.properties");
+        if (realPath != null) {
+            File configFile = new File(realPath);
+            if (configFile.exists()) {
+                try (InputStream in = new FileInputStream(configFile)) {
+                    props.load(in);
+                }
+            }
+        }
+
+        return props;
+    }
+
+    private String getDbDriver(ServletContext context) throws IOException {
+        return loadDbConfig(context).getProperty("db.driver", "com.mysql.cj.jdbc.Driver").trim();
+    }
+
+    private String getDbUrl(ServletContext context) throws IOException {
+        return loadDbConfig(context).getProperty(
+                "db.url",
+                "jdbc:mysql://localhost:3306/inter_office_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+        ).trim();
+    }
+
+    private String getDbUsername(ServletContext context) throws IOException {
+        return loadDbConfig(context).getProperty("db.username", "root").trim();
+    }
+
+    private String getDbPassword(ServletContext context) throws IOException {
+        return loadDbConfig(context).getProperty("db.password", "");
+    }
+
+    private Connection getDbConnection(ServletContext context) throws Exception {
+        Class.forName(getDbDriver(context));
+        return DriverManager.getConnection(
+                getDbUrl(context),
+                getDbUsername(context),
+                getDbPassword(context)
+        );
+    }
+%>
+

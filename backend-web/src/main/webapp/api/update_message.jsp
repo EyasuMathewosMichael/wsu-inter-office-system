@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ page import="java.sql.*, java.io.*, java.util.*" %>
 <%@ include file="../admin/auth_check.jsp" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%
     response.setContentType("application/json");
 
@@ -22,9 +23,7 @@
     try {
         int chatId = Integer.parseInt(chatIdStr);
         int currentUserId = Integer.parseInt(sessionUser.toString());
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        con = getDbConnection(application);
 
         if ("delete".equals(action)) {
             // Only delete if the logged-in user is the sender

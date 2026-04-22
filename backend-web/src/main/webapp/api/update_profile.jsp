@@ -2,6 +2,7 @@
 <%@ page import="java.sql.*, java.io.*, javax.servlet.http.*, java.nio.file.*, java.util.*, org.mindrot.jbcrypt.BCrypt, org.json.JSONObject" %>
 <%@ include file="../admin/auth_check.jsp" %>
 <%@ include file="/WEB-INF/jspf/account_helpers.jspf" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private String sanitizeUploadFileName(String submittedFileName) {
         if (submittedFileName == null) return null;
@@ -96,8 +97,7 @@
             } else if (personalEmail != null && !personalEmail.isEmpty() && !isValidEmailFormat(personalEmail)) {
                 message = "Enter a valid personal email address.";
             } else {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "")) {
+                try (Connection conn = getDbConnection(application)) {
                     ensureUsersPersonalEmailColumn(conn);
 
                     if (personalEmail != null && !personalEmail.isEmpty()) {
@@ -191,3 +191,4 @@
     out.print(json.toString());
     out.flush();
 %>
+

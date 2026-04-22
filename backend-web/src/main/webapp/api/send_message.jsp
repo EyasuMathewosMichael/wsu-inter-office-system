@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ page import="java.sql.*, java.io.*, java.util.*, javax.servlet.http.Part, java.nio.file.Paths" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private String saveChatUpload(Part part, String uploadRoot) throws Exception {
         if (part == null || part.getSize() <= 0 || part.getSubmittedFileName() == null) return "";
@@ -68,9 +69,7 @@
 
         String absoluteUploadPath = getServletContext().getRealPath("/") + "assets" + File.separator + "uploads";
         String dbSavePath = saveChatUpload(attachmentPart, absoluteUploadPath);
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "")) {
+        try (Connection con = getDbConnection(application)) {
             if (chatId != null && !chatId.trim().isEmpty()) {
                 if (dbSavePath.isEmpty()) {
                     out.print("{\"status\":\"error\", \"message\":\"No attachment uploaded.\"}");
@@ -112,3 +111,4 @@
     }
     out.flush();
 %>
+

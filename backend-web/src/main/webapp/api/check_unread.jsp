@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.sql.*, org.json.*" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%
     response.setContentType("application/json");
 
@@ -18,9 +19,7 @@
 
     try {
         int userId = Integer.parseInt(userIdParam.trim());
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "")) {
+        try (Connection con = getDbConnection(application)) {
             String department = "";
             try (PreparedStatement deptPs = con.prepareStatement("SELECT department FROM users WHERE user_id = ?")) {
                 deptPs.setInt(1, userId);
@@ -67,3 +66,4 @@
     responseJson.put("unread", hasUnread);
     out.print(responseJson.toString());
 %>
+

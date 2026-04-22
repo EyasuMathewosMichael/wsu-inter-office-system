@@ -1,4 +1,5 @@
 <%@ page import="java.io.*, java.sql.*" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private File resolveAnnouncementStreamFile(String storedPath, String appRoot) {
         if (storedPath == null || storedPath.trim().isEmpty()) return null;
@@ -32,8 +33,7 @@
     Connection conn = null;
     try {
         int currentUserId = Integer.parseInt(sessionUser.toString());
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        conn = getDbConnection(application);
 
         PreparedStatement ps = conn.prepareStatement("SELECT poster_id, target_dept, attachment_path FROM announcements WHERE announcement_id = ?");
         ps.setInt(1, Integer.parseInt(id));
@@ -88,3 +88,4 @@
         if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
     }
 %>
+

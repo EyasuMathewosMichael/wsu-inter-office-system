@@ -34,7 +34,7 @@ backend-web/src/main/webapp/uploads/
 # Runtime caches
 .openjfx/
 .mvn/wrapper/maven-wrapper.jar
+.m2/
 
 # Sensitive local configuration
 backend-web/src/main/webapp/WEB-INF/mail.properties
-

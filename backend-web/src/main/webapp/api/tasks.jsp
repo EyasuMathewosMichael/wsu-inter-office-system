@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, org.json.JSONObject, org.json.JSONArray, java.util.*, java.io.*, javax.servlet.http.Part, java.nio.file.Paths" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private String normalizeTaskPath(String dbPath) {
         if (dbPath == null) return "";
@@ -41,14 +42,9 @@
     boolean isAdmin = "Admin".equalsIgnoreCase(sessionRole);
     boolean isDeptHead = "Dept Head".equalsIgnoreCase(sessionRole);
 
-    String dbUrl = "jdbc:mysql://localhost:3306/inter_office_db";
-    String dbUser = "root";
-    String dbPass = "";
-
     Connection conn = null;
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+        conn = getDbConnection(application);
 
         if ("GET".equalsIgnoreCase(request.getMethod())) {
             String sql = isAdmin
@@ -230,3 +226,4 @@
         if (conn != null) try { conn.close(); } catch (SQLException e) {}
     }
 %>
+

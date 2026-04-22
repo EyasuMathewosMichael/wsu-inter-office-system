@@ -240,7 +240,7 @@ public class DashboardController {
         new Thread(() -> {
             try {
                 String encodedDept = URLEncoder.encode(UserSession.getUserDept(), StandardCharsets.UTF_8.toString());
-                String url = "http://localhost:8080/backend-web/api/get_announcements.jsp?dept=" + encodedDept;
+                String url = com.frontenddesktop.config.AppConfig.resolve("api/get_announcements.jsp?dept=") + encodedDept;
                 String response = HttpConnector.get(url);
 
                 if (response != null && response.trim().startsWith("[")) {
@@ -279,7 +279,7 @@ public class DashboardController {
     private void loadTaskList() {
         new Thread(() -> {
             try {
-                String url = "http://localhost:8080/backend-web/api/tasks.jsp";
+                String url = com.frontenddesktop.config.AppConfig.apiUrl("tasks.jsp");
                 String response = HttpConnector.get(url);
                 if (response != null) {
                     JsonElement json = JsonParser.parseString(response);
@@ -302,7 +302,7 @@ public class DashboardController {
     private void loadOverviewData() {
         new Thread(() -> {
             try {
-                String taskResponse = HttpConnector.get("http://localhost:8080/backend-web/api/tasks.jsp");
+                String taskResponse = HttpConnector.get(com.frontenddesktop.config.AppConfig.apiUrl("tasks.jsp"));
                 int activeTaskCount = 0;
                 if (taskResponse != null) {
                     JsonElement taskJson = JsonParser.parseString(taskResponse);
@@ -316,7 +316,7 @@ public class DashboardController {
                 }
 
                 String encodedDept = URLEncoder.encode(UserSession.getUserDept(), StandardCharsets.UTF_8.toString());
-                String announcementResponse = HttpConnector.get("http://localhost:8080/backend-web/api/get_announcements.jsp?dept=" + encodedDept);
+                String announcementResponse = HttpConnector.get(com.frontenddesktop.config.AppConfig.resolve("api/get_announcements.jsp?dept=") + encodedDept);
                 int announcementCount = 0;
                 if (announcementResponse != null && announcementResponse.trim().startsWith("[")) {
                     List<Announcement> announcements = new Gson().fromJson(announcementResponse, new TypeToken<List<Announcement>>(){}.getType());
@@ -513,7 +513,7 @@ public class DashboardController {
             @Override
             public void run() {
                 try {
-                    String url = "http://localhost:8080/backend-web/api/check_unread.jsp?user_id=" + UserSession.getUserId();
+                    String url = com.frontenddesktop.config.AppConfig.resolve("api/check_unread.jsp?user_id=") + UserSession.getUserId();
                     String response = HttpConnector.get(url);
                     if (response != null && response.contains("\"unread\":true")) {
                         Platform.runLater(() -> {
@@ -531,7 +531,7 @@ public class DashboardController {
     private void markMessagesAsRead() {
         new Thread(() -> {
             try {
-                HttpConnector.get("http://localhost:8080/backend-web/api/mark_read.jsp?user_id=" + UserSession.getUserId());
+                HttpConnector.get(com.frontenddesktop.config.AppConfig.resolve("api/mark_read.jsp?user_id=") + UserSession.getUserId());
             } catch (Exception ignored) {
             }
         }).start();
@@ -564,3 +564,4 @@ public class DashboardController {
         }
     }
 }
+

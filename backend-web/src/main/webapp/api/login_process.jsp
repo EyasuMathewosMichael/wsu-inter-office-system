@@ -1,5 +1,6 @@
 <%@ page import="java.sql.*, org.json.JSONObject, org.mindrot.jbcrypt.BCrypt" %>
 <%@ page contentType="application/json;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private boolean isBcryptHash(String value) {
         return value != null && value.startsWith("$2");
@@ -24,9 +25,8 @@
     ResultSet rs = null;
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
         // Using your specific database name [cite: 2026-01-28]
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        conn = getDbConnection(application);
 
         // 2. Fetch user data by username only [cite: 2026-01-21]
         String sql = "SELECT user_id, username, password, role, department, full_name FROM users WHERE username = ?";
@@ -74,3 +74,4 @@
 
     out.print(responseJson.toString());
 %>
+

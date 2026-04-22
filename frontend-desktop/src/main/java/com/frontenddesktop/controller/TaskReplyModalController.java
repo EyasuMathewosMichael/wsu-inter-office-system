@@ -67,7 +67,7 @@ public class TaskReplyModalController {
 
         new Thread(() -> {
             try {
-                String url = "http://localhost:8080/backend-web/api/tasks.jsp";
+                String url = com.frontenddesktop.config.AppConfig.apiUrl("tasks.jsp");
                 String response = (selectedCompletionFile != null)
                         ? HttpConnector.postMultipart(url, params, selectedCompletionFile)
                         : HttpConnector.post(url, params);
@@ -100,3 +100,4 @@ public class TaskReplyModalController {
         alert.showAndWait();
     }
 }
+

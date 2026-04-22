@@ -1,5 +1,6 @@
 <%@ page import="java.sql.*, com.google.gson.Gson, java.util.*" %>
 <%@ page contentType="application/json; charset=UTF-8" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%
     String headIdParam = request.getParameter("dept_head_id");
     List<Map<String, Object>> staffList = new ArrayList<>();
@@ -7,8 +8,7 @@
     if (headIdParam != null) {
         try {
             int deptHeadId = Integer.parseInt(headIdParam);
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+            Connection conn = getDbConnection(application);
 
             // FIXED: Changed 'department_id' to 'department' to match your table screenshot [cite: 2026-02-22]
             String sql = "SELECT user_id, username FROM users WHERE role = 'Staff' AND department = " +

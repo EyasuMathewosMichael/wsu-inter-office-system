@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%@ include file="auth_check.jsp" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -303,8 +304,7 @@
                 Statement stmt = null;
                 ResultSet rs = null;
                 try {
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+                    conn = getDbConnection(application);
                     stmt = conn.createStatement();
 
                     rs = stmt.executeQuery("SELECT COUNT(*) FROM users");
@@ -439,3 +439,4 @@
 </script>
 </body>
 </html>
+

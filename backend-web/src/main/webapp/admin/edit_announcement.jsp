@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, java.io.*" %>
 <%@ include file="../admin/auth_check.jsp" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,8 +23,7 @@
     String title = "", content = "", dept = "", attachment = "";
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        Connection conn = getDbConnection(application);
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM announcements WHERE announcement_id = ?");
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
@@ -99,3 +99,4 @@
 </div>
 </body>
 </html>
+

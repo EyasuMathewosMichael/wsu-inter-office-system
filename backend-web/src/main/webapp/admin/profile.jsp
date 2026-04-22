@@ -2,6 +2,7 @@
 <%@ page import="java.sql.*" %>
 <%@ include file="auth_check.jsp" %>
 <%@ include file="/WEB-INF/jspf/account_helpers.jspf" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private String escapeHtml(String value) {
         if (value == null) return "";
@@ -245,8 +246,7 @@
     String fullName = "", username = "", bio = "", phone = "", personalEmail = "", profilePic = "admin-avatar.png";
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        Connection conn = getDbConnection(application);
         ensureUsersPersonalEmailColumn(conn);
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE user_id = ?");
         ps.setInt(1, adminId);
@@ -495,3 +495,4 @@
 </script>
 </body>
 </html>
+

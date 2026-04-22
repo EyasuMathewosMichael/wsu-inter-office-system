@@ -1,4 +1,5 @@
 <%@ page import="java.sql.*" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%
     String sidebarAdminName = "Administrator";
     String sidebarAdminRole = "System Superuser";
@@ -15,8 +16,7 @@
         ResultSet sidebarRs = null;
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            sidebarConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+            sidebarConn = getDbConnection(application);
             sidebarPs = sidebarConn.prepareStatement(
                 "SELECT full_name, role, profile_pic_path FROM users WHERE user_id = ?"
             );
@@ -66,3 +66,4 @@
         .replace("\"", "&quot;")
         .replace("'", "&#39;");
 %>
+

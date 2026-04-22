@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ page import="java.sql.*, org.json.JSONObject" %>
 <%@ include file="/WEB-INF/jspf/account_helpers.jspf" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
@@ -38,8 +39,7 @@
     Connection conn = null;
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        conn = getDbConnection(application);
         ensureUsersPersonalEmailColumn(conn);
         ensurePasswordResetTable(conn);
 
@@ -99,3 +99,4 @@
 
     out.print(json.toString());
 %>
+

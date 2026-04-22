@@ -81,7 +81,7 @@ public class LoginController {
                 Map<String, String> params = new HashMap<>();
                 params.put("user", user);
                 params.put("pass", pass);
-                String response = HttpConnector.post("http://localhost:8080/backend-web/api/auth.jsp", params);
+                String response = HttpConnector.post(com.frontenddesktop.config.AppConfig.apiUrl("auth.jsp"), params);
 
                 javafx.application.Platform.runLater(() -> {
                     if (response != null && response.contains("\"success\":true")) {
@@ -99,7 +99,7 @@ public class LoginController {
                             showAlert(
                                     Alert.AlertType.INFORMATION,
                                     "Web Portal Required",
-                                    "Admin accounts must use the web admin portal.\n\nOpen: http://localhost:8080/backend-web/admin/login.jsp"
+                                    "Admin accounts must use the web admin portal.\n\nOpen: " + com.frontenddesktop.config.AppConfig.adminUrl("login.jsp")
                             );
                             return;
                         }
@@ -190,7 +190,7 @@ public class LoginController {
                     params.put("username", username);
                     params.put("personal_email", personalEmail);
 
-                    String response = HttpConnector.post("http://localhost:8080/backend-web/api/request_password_reset.jsp", params);
+                    String response = HttpConnector.post(com.frontenddesktop.config.AppConfig.apiUrl("request_password_reset.jsp"), params);
                     javafx.application.Platform.runLater(() -> {
                         if (response != null && response.trim().startsWith("{")) {
                             JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();
@@ -270,3 +270,5 @@ public class LoginController {
         alert.showAndWait();
     }
 }
+
+

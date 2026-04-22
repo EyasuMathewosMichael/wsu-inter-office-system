@@ -171,7 +171,7 @@ public class ProfileController {
                 params.put("personal_email", personalEmail);
                 params.put("phone", phone);
                 params.put("bio", bio);
-                String response = HttpConnector.post("http://localhost:8080/backend-web/api/update_user_profile.jsp", params);
+                String response = HttpConnector.post(com.frontenddesktop.config.AppConfig.apiUrl("update_user_profile.jsp"), params);
 
                 Platform.runLater(() -> {
                     btnSaveProfile.setDisable(false);
@@ -219,7 +219,7 @@ public class ProfileController {
         new Thread(() -> {
             try {
                 String response = HttpConnector.postMultipart(
-                        "http://localhost:8080/backend-web/api/update_user_profile_photo.jsp",
+                        com.frontenddesktop.config.AppConfig.apiUrl("update_user_profile_photo.jsp"),
                         new HashMap<>(),
                         selectedPhotoFile,
                         "profile_pic"
@@ -290,7 +290,7 @@ public class ProfileController {
                 Map<String, String> params = new HashMap<>();
                 params.put("old_pass", currentPass);
                 params.put("new_pass", newPass);
-                String response = HttpConnector.post("http://localhost:8080/backend-web/api/update_password.jsp", params);
+                String response = HttpConnector.post(com.frontenddesktop.config.AppConfig.apiUrl("update_password.jsp"), params);
 
                 Platform.runLater(() -> {
                     btnUpdate.setDisable(false);
@@ -334,3 +334,4 @@ public class ProfileController {
         this.onProfilePhotoUpdated = onProfilePhotoUpdated;
     }
 }
+

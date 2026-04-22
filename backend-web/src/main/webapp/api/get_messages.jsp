@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ page import="java.sql.*, java.io.*, java.util.*" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache");
@@ -22,9 +23,7 @@
     try {
         int userId = Integer.parseInt(userIdStr.trim());
         int targetId = Integer.parseInt(targetIdStr.trim());
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "")) {
+        try (Connection con = getDbConnection(application)) {
 
             String myDept = "";
             try (PreparedStatement psDept = con.prepareStatement("SELECT department FROM users WHERE user_id = ?")) {
@@ -132,3 +131,4 @@
     out.print(json.toString());
     out.flush();
 %>
+

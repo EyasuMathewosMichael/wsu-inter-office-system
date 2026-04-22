@@ -134,7 +134,7 @@ public class TaskItemController {
                     params.put("action", "delete_task");
                     params.put("task_id", String.valueOf(currentTask.getTaskId()));
 
-                    String response = HttpConnector.post("http://localhost:8080/backend-web/api/tasks.jsp", params);
+                    String response = HttpConnector.post(com.frontenddesktop.config.AppConfig.apiUrl("tasks.jsp"), params);
                     if (response != null && response.contains("success")) {
                         Platform.runLater(() -> {
                             if (onTaskChanged != null) {
@@ -182,7 +182,7 @@ public class TaskItemController {
         new Thread(() -> {
             try {
                 String cleanPath = path.startsWith("/") ? path.substring(1) : path;
-                URL url = new URL("http://localhost:8080/backend-web/" + cleanPath);
+                URL url = new URL(com.frontenddesktop.config.AppConfig.resolve(cleanPath));
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     File tempFile = File.createTempFile("task_attachment_", "_" + new File(cleanPath).getName());
@@ -261,7 +261,7 @@ public class TaskItemController {
                 params.put("action", "update_status");
                 params.put("task_id", String.valueOf(currentTask.getTaskId()));
                 params.put("status", newStatus);
-                HttpConnector.post("http://localhost:8080/backend-web/api/tasks.jsp", params);
+                HttpConnector.post(com.frontenddesktop.config.AppConfig.apiUrl("tasks.jsp"), params);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -287,3 +287,4 @@ public class TaskItemController {
         });
     }
 }
+

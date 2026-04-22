@@ -1,11 +1,11 @@
 <%@ page import="java.sql.*" %>
 <%@ include file="auth_check.jsp" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%
     String userId = request.getParameter("id");
     if (userId != null) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+            Connection conn = getDbConnection(application);
 
             // Delete query
             PreparedStatement ps = conn.prepareStatement("DELETE FROM users WHERE user_id = ?");

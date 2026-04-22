@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, java.util.*" %>
 <%@ include file="auth_check.jsp" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%
     Object adminSessionId = session.getAttribute("user_id");
     String finalAdminId = (adminSessionId != null) ? adminSessionId.toString() : "-1";
@@ -474,8 +475,7 @@
                 <div class="staff-list-container flex-grow-1 overflow-auto" id="staffList">
                    <%
                        try {
-                           Class.forName("com.mysql.cj.jdbc.Driver");
-                           Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+                           Connection conn = getDbConnection(application);
                            String sql = "SELECT user_id, username, full_name, department FROM users WHERE user_id != ? ORDER BY department, full_name";
                            PreparedStatement ps = conn.prepareStatement(sql);
                            ps.setString(1, finalAdminId);
@@ -794,3 +794,4 @@
 
 </body>
 </html>
+

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, org.json.*, java.util.*, java.io.*, javax.servlet.http.Part, java.nio.file.Paths" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private String saveAnnouncementUpload(Part part, String uploadRoot) throws Exception {
         if (part == null || part.getSize() <= 0 || part.getSubmittedFileName() == null) return "";
@@ -71,9 +72,7 @@
 
         String uploadRoot = getServletContext().getRealPath("/") + "assets" + File.separator + "uploads" + File.separator + "announcements";
         String attachmentPath = saveAnnouncementUpload(attachmentPart, uploadRoot);
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "")) {
+        try (Connection conn = getDbConnection(application)) {
             String sql = "INSERT INTO announcements (poster_id, title, content, attachment_path, target_dept, created_at) VALUES (?, ?, ?, ?, ?, NOW())";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, Integer.parseInt(sessionUser.toString()));
@@ -93,3 +92,4 @@
         out.print(new JSONObject().put("status", "error").put("message", e.getMessage()).toString());
     }
 %>
+

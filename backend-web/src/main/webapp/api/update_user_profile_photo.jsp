@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ page import="java.sql.*, java.io.*, java.nio.file.*, javax.servlet.http.*, org.json.JSONObject" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private String sanitizeUploadFileName(String submittedFileName) {
         if (submittedFileName == null) return null;
@@ -84,9 +85,7 @@
 
         uploadedFile = new File(uploadDir, fileName);
         filePart.write(uploadedFile.getAbsolutePath());
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "")) {
+        try (Connection conn = getDbConnection(application)) {
             String oldPhotoPath = null;
             try (PreparedStatement psSelect = conn.prepareStatement("SELECT profile_pic_path FROM users WHERE user_id = ?")) {
                 psSelect.setInt(1, userId);
@@ -132,3 +131,4 @@
 
     out.print(json.toString());
 %>
+

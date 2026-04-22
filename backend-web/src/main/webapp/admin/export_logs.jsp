@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/csv; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, java.util.*" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%
     // Generate unique filename with timestamp
     long timestamp = new java.util.Date().getTime();
@@ -12,8 +13,7 @@
     String endDate = request.getParameter("endDate") != null ? request.getParameter("endDate") : "";
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        Connection conn = getDbConnection(application);
 
         // Refined 2-Way Union: Only tracking Announcements and Tasks
         StringBuilder query = new StringBuilder("SELECT * FROM (");

@@ -63,8 +63,8 @@ public class PostAnnouncementController {
         new Thread(() -> {
             try {
                 String response = (selectedFile != null)
-                        ? HttpConnector.postMultipart("http://localhost:8080/backend-web/api/announcements.jsp", data, selectedFile)
-                        : HttpConnector.post("http://localhost:8080/backend-web/api/announcements.jsp", data);
+                        ? HttpConnector.postMultipart(com.frontenddesktop.config.AppConfig.apiUrl("announcements.jsp"), data, selectedFile)
+                        : HttpConnector.post(com.frontenddesktop.config.AppConfig.apiUrl("announcements.jsp"), data);
 
                 Platform.runLater(() -> {
                     // Check for standard success status
@@ -95,3 +95,4 @@ public class PostAnnouncementController {
         alert.showAndWait();
     }
 }
+

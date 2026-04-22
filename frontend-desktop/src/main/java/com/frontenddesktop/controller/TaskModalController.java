@@ -165,13 +165,13 @@ public class TaskModalController {
         taskData.put("creator_id", String.valueOf(UserSession.getUserId()));
 
         String successMsg = isEditMode ? "Task updated successfully!" : "Task assigned successfully!";
-        sendRequest("http://localhost:8080/backend-web/api/tasks.jsp", taskData, selectedFile, successMsg);
+        sendRequest(com.frontenddesktop.config.AppConfig.apiUrl("tasks.jsp"), taskData, selectedFile, successMsg);
     }
 
     private void loadStaffMembers() {
         new Thread(() -> {
             try {
-                String url = "http://localhost:8080/backend-web/api/users.jsp?dept_head_id=" + UserSession.getUserId();
+                String url = com.frontenddesktop.config.AppConfig.resolve("api/users.jsp?dept_head_id=") + UserSession.getUserId();
                 String response = HttpConnector.get(url);
                 if (response != null && response.trim().startsWith("[")) {
                     List<User> staffList = new Gson().fromJson(response, new TypeToken<List<User>>(){}.getType());
@@ -258,7 +258,7 @@ public class TaskModalController {
         Map<String, String> params = new HashMap<>();
         params.put("task_id", String.valueOf(currentTask.getTaskId()));
 
-        String url = "http://localhost:8080/backend-web/api/acknowledge_task.jsp";
+        String url = com.frontenddesktop.config.AppConfig.apiUrl("acknowledge_task.jsp");
         sendRequest(url, params, null, "Task successfully acknowledged and closed!");
     }
     @FXML
@@ -274,7 +274,7 @@ public class TaskModalController {
         new Thread(() -> {
             try {
                 String cleanPath = path.startsWith("/") ? path.substring(1) : path;
-                URL url = new URL("http://localhost:8080/backend-web/" + cleanPath);
+                URL url = new URL(com.frontenddesktop.config.AppConfig.resolve(cleanPath));
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                     showAlert(Alert.AlertType.ERROR, "Download Error", "Attachment is not available on the server.");
@@ -301,3 +301,4 @@ public class TaskModalController {
         }).start();
     }
 }
+

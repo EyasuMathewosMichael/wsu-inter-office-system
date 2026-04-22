@@ -93,7 +93,7 @@ public class AnnouncementItemController {
                 params.put("title", title);
                 params.put("content", content);
 
-                String response = HttpConnector.post("http://localhost:8080/backend-web/api/update_announcement.jsp", params);
+                String response = HttpConnector.post(com.frontenddesktop.config.AppConfig.apiUrl("update_announcement.jsp"), params);
                 if (response != null && response.contains("success")) {
                     Platform.runLater(refreshCallback);
                 }
@@ -110,7 +110,7 @@ public class AnnouncementItemController {
                     try {
                         Map<String, String> params = new HashMap<>();
                         params.put("id", String.valueOf(currentAnnouncement.getAnnouncementId()));
-                        String response = HttpConnector.post("http://localhost:8080/backend-web/api/delete_announcement.jsp", params);
+                        String response = HttpConnector.post(com.frontenddesktop.config.AppConfig.apiUrl("delete_announcement.jsp"), params);
                         if (response != null && response.contains("success")) {
                             Platform.runLater(refreshCallback);
                         }
@@ -139,7 +139,7 @@ public class AnnouncementItemController {
         new Thread(() -> {
             try {
                 String cleanPath = path.startsWith("/") ? path.substring(1) : path;
-                URL url = new URL("http://localhost:8080/backend-web/" + cleanPath);
+                URL url = new URL(com.frontenddesktop.config.AppConfig.resolve(cleanPath));
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                     return;
@@ -161,3 +161,4 @@ public class AnnouncementItemController {
         }).start();
     }
 }
+

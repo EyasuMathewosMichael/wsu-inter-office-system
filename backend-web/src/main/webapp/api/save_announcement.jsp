@@ -2,6 +2,7 @@
 <%@ page import="java.sql.*, java.io.*, java.util.*" %>
 <%@ page import="org.apache.commons.fileupload.*, org.apache.commons.fileupload.disk.*, org.apache.commons.fileupload.servlet.*" %>
 <%@ include file="../admin/auth_check.jsp" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 
 <%
     // Ensure the request is multipart (contains a file)
@@ -51,8 +52,7 @@
         }
 
         // Database Insertion [cite: 2026-02-25]
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        Connection conn = getDbConnection(application);
 
         String sql = "INSERT INTO announcements (poster_id, title, target_dept, content, attachment_path) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement pstmt = conn.prepareStatement(sql);

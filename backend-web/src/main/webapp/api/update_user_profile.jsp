@@ -1,6 +1,7 @@
 <%@ page import="java.sql.*, org.json.JSONObject" %>
 <%@ page contentType="application/json;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/jspf/account_helpers.jspf" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
@@ -62,8 +63,7 @@
 
     try {
         int userId = Integer.parseInt(sessionUser.toString());
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        conn = getDbConnection(application);
         ensureUsersPersonalEmailColumn(conn);
 
         if (!personalEmail.isEmpty()) {
@@ -111,3 +111,4 @@
 
     out.print(json.toString());
 %>
+

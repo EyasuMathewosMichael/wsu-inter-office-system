@@ -1,0 +1,5 @@
+# Example production database configuration for backend-web.
+db.driver=com.mysql.cj.jdbc.Driver
+db.url=jdbc:mysql://127.0.0.1:3306/inter_office_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+db.username=iocs_user
+db.password=change_me

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, java.io.*, java.util.*, javax.servlet.http.Part, java.nio.file.Paths, java.net.URLEncoder" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private String saveUpdatedAnnouncementFile(Part part, String uploadRoot) throws Exception {
         if (part == null || part.getSize() <= 0 || part.getSubmittedFileName() == null) return "";
@@ -77,9 +78,7 @@
         }
 
         boolean wantsRedirect = redirectTo != null && !redirectTo.trim().isEmpty();
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "")) {
+        try (Connection conn = getDbConnection(application)) {
             String existingTargetDept = targetDept;
             PreparedStatement checkPs = conn.prepareStatement("SELECT poster_id, target_dept FROM announcements WHERE announcement_id = ?");
             checkPs.setInt(1, announcementId);
@@ -148,3 +147,4 @@
         }
     }
 %>
+

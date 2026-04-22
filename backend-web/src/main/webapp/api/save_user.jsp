@@ -2,6 +2,7 @@
 <%@ page import="java.sql.*, java.io.*, java.util.*, org.mindrot.jbcrypt.BCrypt" %>
 <%@ page import="javax.servlet.http.Part" %>
 <%@ page import="java.nio.file.Paths" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 
 <%
     request.setCharacterEncoding("UTF-8");
@@ -54,8 +55,7 @@
             }
 
             // 3. Database Operation
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+            conn = getDbConnection(application);
 
             String sql = "INSERT INTO users (full_name, username, password, role, department, profile_pic_path, created_at) " +
                          "VALUES (?, ?, ?, ?, ?, ?, NOW())";
@@ -90,3 +90,4 @@
         out.println("Error: Invalid Request Type. Please use the form in manage_users.jsp.");
     }
 %>
+

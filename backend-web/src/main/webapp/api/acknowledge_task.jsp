@@ -1,4 +1,5 @@
 <%@ page import="java.sql.*, org.json.JSONObject" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%
     response.setContentType("application/json");
     JSONObject res = new JSONObject();
@@ -35,8 +36,7 @@
 
     Connection conn = null;
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        conn = getDbConnection(application);
 
         String sql = isAdmin
                 ? "UPDATE tasks SET acknowledged = 1 WHERE task_id = ?"
@@ -64,3 +64,4 @@
 
     out.print(res.toString());
 %>
+

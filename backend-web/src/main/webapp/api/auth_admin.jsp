@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, org.mindrot.jbcrypt.BCrypt" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private boolean isBcryptHash(String value) {
         return value != null && value.startsWith("$2");
@@ -17,8 +18,7 @@
 
     Connection conn = null;
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        conn = getDbConnection(application);
 
         String sql = "SELECT * FROM users WHERE username = ? AND role = 'Admin'";
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -65,3 +65,4 @@
         if (conn != null) try { conn.close(); } catch(Exception e) {}
     }
 %>
+

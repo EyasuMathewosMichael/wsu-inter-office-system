@@ -1,8 +1,8 @@
 package com.frontenddesktop.util;
 
-public final class ProfileImageUtil {
-    private static final String PROFILE_IMAGE_BASE_URL = "http://localhost:8080/backend-web/assets/img/";
+import com.frontenddesktop.config.AppConfig;
 
+public final class ProfileImageUtil {
     private ProfileImageUtil() {
     }
 
@@ -17,6 +17,7 @@ public final class ProfileImageUtil {
             return null;
         }
 
-        return PROFILE_IMAGE_BASE_URL + fileName;
+        return AppConfig.resolve("assets/img/" + fileName);
     }
 }
+

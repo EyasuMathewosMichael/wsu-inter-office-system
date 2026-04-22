@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%@ include file="auth_check.jsp" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -351,8 +352,7 @@
                         <tbody>
                             <%
                                 try {
-                                    Class.forName("com.mysql.cj.jdbc.Driver");
-                                    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+                                    Connection conn = getDbConnection(application);
 
                                     StringBuilder query = new StringBuilder("SELECT * FROM (");
                                     query.append("SELECT announcement_id AS id, 'Announcement' AS type, title AS content, target_dept AS target, created_at FROM announcements ");
@@ -424,3 +424,4 @@
 </script>
 </body>
 </html>
+

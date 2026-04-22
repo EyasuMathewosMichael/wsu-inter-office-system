@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.io.File" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 
 <%
     // 1. Get the ID of the user to be deleted [cite: 2026-01-21]
@@ -16,8 +17,7 @@
             int userId = Integer.parseInt(userIdStr.trim());
 
             // 2. Database Connection [cite: 2026-01-21, 2026-01-28]
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+            conn = getDbConnection(application);
 
             // Disable auto-commit to treat this as a single transaction
             conn.setAutoCommit(false);

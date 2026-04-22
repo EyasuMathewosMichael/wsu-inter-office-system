@@ -24,7 +24,7 @@ public class NotificationService {
 
     private void checkForUpdates() {
         try {
-            String url = "http://localhost:8080/backend-web/api/check_notifications.jsp?dept_head_id=" + UserSession.getUserId();
+            String url = com.frontenddesktop.config.AppConfig.resolve("api/check_notifications.jsp?dept_head_id=") + UserSession.getUserId();
             String response = HttpConnector.get(url);
 
             JsonArray jsonArray = JsonParser.parseString(response).getAsJsonArray();

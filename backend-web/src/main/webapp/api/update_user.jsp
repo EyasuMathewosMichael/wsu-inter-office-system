@@ -2,14 +2,11 @@
 <%@ page import="java.sql.*, java.io.*, java.util.*, org.mindrot.jbcrypt.BCrypt" %>
 <%@ page import="javax.servlet.http.Part" %>
 <%@ include file="../admin/auth_check.jsp" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 
 <%
     // Ensure consistent encoding for university data
     request.setCharacterEncoding("UTF-8");
-
-    String dbUrl = "jdbc:mysql://localhost:3306/inter_office_db";
-    String dbUser = "root";
-    String dbPass = "";
 
     Connection conn = null;
     PreparedStatement ps = null;
@@ -37,9 +34,7 @@
         String department = fields.get("department");
 
         if (userId == null || userId.isEmpty()) throw new Exception("User ID missing from request");
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+        conn = getDbConnection(application);
 
         // 2. Handle Photo Upload & Storage Hygiene
         Part filePart = request.getPart("profile_pic");
@@ -102,3 +97,4 @@
         if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
     }
 %>
+

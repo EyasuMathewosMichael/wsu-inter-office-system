@@ -55,7 +55,7 @@ public class ChatController {
     private Map<String, Object> replyingToMessage = null;
     private volatile boolean loadingMessages = false;
     private String lastMessagesPayload = null;
-    private final String BASE_URL = "http://localhost:8080/backend-web/";
+    private final String BASE_URL = com.frontenddesktop.config.AppConfig.getBackendBaseUrl() + "/";
 
     public void initialize() {
         Platform.runLater(() -> {
@@ -811,3 +811,4 @@ public class ChatController {
 
     public void stopPolling() { if (chatTimer != null) chatTimer.cancel(); }
 }
+

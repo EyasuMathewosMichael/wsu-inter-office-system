@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, org.json.*" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%!
     private String normalizeAnnouncementPath(String dbPath) {
         if (dbPath == null) return "";
@@ -32,8 +33,7 @@
     }
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "")) {
+        try (Connection con = getDbConnection(application)) {
             String query = "SELECT a.*, u.full_name, u.role FROM announcements a " +
                            "LEFT JOIN users u ON a.poster_id = u.user_id " +
                            "WHERE a.target_dept = ? OR a.target_dept = 'Global' OR ? = 'Admin' " +
@@ -73,3 +73,4 @@
 
     out.print(array.toString());
 %>
+

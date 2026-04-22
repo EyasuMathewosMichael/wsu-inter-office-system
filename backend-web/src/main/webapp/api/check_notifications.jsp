@@ -1,11 +1,11 @@
 <%@ page import="java.sql.*, org.json.*" %>
+<%@ include file="/WEB-INF/jspf/db.jspf" %>
 <%
     String deptHeadId = request.getParameter("dept_head_id");
     JSONArray notifications = new JSONArray();
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/inter_office_db", "root", "");
+        Connection conn = getDbConnection(application);
 
         // Find tasks that were completed but not yet "acknowledged" by the Dept Head
         String sql = "SELECT task_id, title FROM tasks WHERE creator_id = ? AND status = 'Completed' AND acknowledged = 0";
