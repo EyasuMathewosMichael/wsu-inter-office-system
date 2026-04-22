@@ -6,6 +6,8 @@ APP_DIR="${CATALINA_HOME}/webapps/backend-web"
 WEB_INF_DIR="${APP_DIR}/WEB-INF"
 SERVER_XML="${CATALINA_HOME}/conf/server.xml"
 PORT_VALUE="${PORT:-10000}"
+UPLOAD_BASE_DIR="${UPLOAD_BASE_DIR:-/var/data/wsu-iocs}"
+SEED_IMG_DIR="/opt/render-seed/assets-img"
 
 mkdir -p "${WEB_INF_DIR}"
 
@@ -37,7 +39,20 @@ else
 fi
 
 mkdir -p \
-    "${APP_DIR}/assets/uploads" \
+    "${UPLOAD_BASE_DIR}/assets/img" \
+    "${UPLOAD_BASE_DIR}/assets/uploads" \
+    "${UPLOAD_BASE_DIR}/assets/uploads/announcements" \
+    "${UPLOAD_BASE_DIR}/assets/uploads/tasks"
+
+if [ -d "${SEED_IMG_DIR}" ]; then
+    cp -Rn "${SEED_IMG_DIR}/." "${UPLOAD_BASE_DIR}/assets/img/" 2>/dev/null || true
+fi
+
+rm -rf "${APP_DIR}/assets/img" "${APP_DIR}/assets/uploads"
+ln -sfn "${UPLOAD_BASE_DIR}/assets/img" "${APP_DIR}/assets/img"
+ln -sfn "${UPLOAD_BASE_DIR}/assets/uploads" "${APP_DIR}/assets/uploads"
+
+mkdir -p \
     "${APP_DIR}/assets/uploads/announcements" \
     "${APP_DIR}/assets/uploads/tasks" \
     "${APP_DIR}/assets/img"

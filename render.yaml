@@ -8,6 +8,8 @@ services:
     autoDeploy: true
     healthCheckPath: /backend-web/index.jsp
     envVars:
+      - key: UPLOAD_BASE_DIR
+        value: /tmp/wsu-iocs
       - key: DB_DRIVER
         value: com.mysql.cj.jdbc.Driver
       - key: DB_URL
