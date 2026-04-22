@@ -30,7 +30,11 @@ This release packages the current working state of the system across:
 
 ## Notes
 
-- The backend is expected to run at `http://localhost:8080/backend-web`.
+- Local backend runtime remains `http://localhost:8080/backend-web`.
+- Public deployment is currently available at `https://wsu-inter-office-system-backend.onrender.com/`.
+- The public admin login page is `https://wsu-inter-office-system-backend.onrender.com/admin/login.jsp`.
+- The public database is hosted on Aiven MySQL.
+- Render is currently used on the free plan, so uploaded files are not persistent across redeploys or restarts.
 - SMTP settings must be configured locally in `backend-web/src/main/webapp/WEB-INF/mail.properties`.
 - Packaged desktop outputs may vary by local JavaFX and Windows packaging setup.
 

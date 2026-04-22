@@ -224,9 +224,9 @@ def generate_architecture_pdf() -> None:
 
     draw_box_with_text(draw, admin_box, "Admin Web Portal", "Browser-based interface for Admin users. Handles user management, announcements, chat, traffic logs, and admin profile updates.", COLORS["soft_blue"])
     draw_box_with_text(draw, desktop_box, "JavaFX Desktop Client", "Desktop application for Dept Head and Staff. Covers dashboard, tasks, announcements, chat, profile management, and password updates.", COLORS["soft_teal"])
-    draw_box_with_text(draw, backend_box, "Apache Tomcat + backend-web", "JSP pages act as both web views and JSON endpoints. Core features include authentication, tasks, announcements, messaging, profile updates, and password reset processing.", COLORS["panel"])
-    draw_box_with_text(draw, db_box, "MySQL / MariaDB", "Primary database: inter_office_db. Stores users, chats, tasks, announcements, task replies, and password reset tokens.", COLORS["soft_gold"])
-    draw_box_with_text(draw, files_box, "File Storage", "Uploads are stored under backend assets for chat attachments, announcement files, task files, and profile images.", COLORS["soft_blue"])
+    draw_box_with_text(draw, backend_box, "Tomcat Backend on Render", "JSP pages act as both web views and JSON endpoints. Core features include authentication, tasks, announcements, messaging, profile updates, and password reset processing.", COLORS["panel"])
+    draw_box_with_text(draw, db_box, "Aiven MySQL", "Primary database: inter_office_db. Stores users, chats, tasks, announcements, task replies, and password reset tokens.", COLORS["soft_gold"])
+    draw_box_with_text(draw, files_box, "Asset and Upload Storage", "Static assets are bundled with the webapp. Public uploads are currently served from Render-backed app storage, which is ephemeral on the free plan.", COLORS["soft_blue"])
     draw_box_with_text(draw, smtp_box, "Gmail SMTP", "Used by the password reset flow to send a one-time reset link to the user’s personal email address.", COLORS["soft_red"])
 
     draw_arrow(draw, (880, 590), (1160, 760), "HTML / JSP")
@@ -241,7 +241,7 @@ def generate_architecture_pdf() -> None:
         "Architecture Notes",
         [
             "Role model: Admin uses the web portal only, while Dept Head and Staff use the desktop client.",
-            "Desktop and web clients both depend on the same backend-web application deployed under http://localhost:8080/backend-web.",
+            "Local development uses Tomcat under http://localhost:8080/backend-web, while the public deployment is served from https://wsu-inter-office-system-backend.onrender.com/.",
             "The backend uses direct JDBC from JSPs. This is functional, but tightly couples SQL, transport, and page logic.",
             "Passwords are upgraded to bcrypt on successful login, and reset links are issued through the backend to personal email addresses.",
         ],
@@ -284,7 +284,7 @@ def generate_architecture_pdf() -> None:
         "JSON-style APIs under api/ including auth.jsp, tasks.jsp, announcements.jsp, get_messages.jsp, get_users.jsp",
         "Shared auth/profile helpers such as auth_check.jsp and account_helpers.jspf",
         "Upload storage under assets/uploads and assets/img",
-        "Runtime deployment under Tomcat webapps/backend-web",
+        "Runtime deployment on local Tomcat or public Render root context",
     ]
     y = 1025
     for item in backend_items:

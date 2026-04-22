@@ -156,7 +156,7 @@ mvn clean package
 
 ## 7. Runtime Configuration
 
-### Backend Web Context
+### Local Backend Web Context
 
 The web app runs under this base URL:
 
@@ -171,6 +171,26 @@ http://localhost:8080/backend-web/index.jsp
 http://localhost:8080/backend-web/admin/login.jsp
 ```
 
+### Public Deployment Profile
+
+The current public deployment uses:
+
+- backend hosting: Render
+- database hosting: Aiven MySQL
+- public base URL: `https://wsu-inter-office-system-backend.onrender.com/`
+
+Public browser entry pages:
+
+```text
+https://wsu-inter-office-system-backend.onrender.com/
+https://wsu-inter-office-system-backend.onrender.com/admin/login.jsp
+```
+
+Current operational note:
+
+- the Render deployment is on the free plan
+- uploaded files are served correctly, but file storage is ephemeral and may be lost after redeploys or restarts
+
 ### Live Tomcat Path Used in This Project
 
 The repository source most often synced during development is:
@@ -179,9 +199,9 @@ The repository source most often synced during development is:
 C:\xampp\tomcat\webapps\backend-web
 ```
 
-### Database Connection
+### Local Database Connection
 
-Most backend JSP endpoints connect directly using hard-coded values:
+Local Tomcat/XAMPP development commonly uses:
 
 ```text
 jdbc:mysql://localhost:3306/inter_office_db
@@ -189,7 +209,13 @@ user: root
 password: (empty)
 ```
 
-This appears repeatedly across the JSP API files.
+### Public Database Connection
+
+The current public deployment uses an Aiven MySQL instance.
+
+Application-level DB credentials are injected into the Render container through environment variables and written at startup into:
+
+- `backend-web/src/main/webapp/WEB-INF/db.properties`
 
 ### Multipart Handling
 
@@ -776,11 +802,22 @@ Important limitations:
 
 ### Desktop/Backend Coupling
 
-The desktop client source is currently hard-coded to call:
+The desktop client now supports a configurable backend base URL.
+
+Local development commonly uses:
 
 - `http://localhost:8080/backend-web`
 
-If the backend host, port, or context path changes, the desktop source must be updated to match.
+Public deployment currently uses:
+
+- `https://wsu-inter-office-system-backend.onrender.com/`
+
+This is configured through:
+
+- `frontend-desktop/src/main/resources/com/frontenddesktop/config/app.properties`
+- `frontend-desktop/src/main/resources/com/frontenddesktop/config/app.properties.render.example`
+- JVM override: `-Diocs.backend.base_url=...`
+- environment override: `IOCS_BACKEND_BASE_URL`
 
 ### Password Storage
 
@@ -845,6 +882,7 @@ C:\xampp\tomcat\webapps\backend-web
 - add schema migration tooling
 - add seed scripts for demo and test data
 - add backup/restore guidance
+- move public uploads to persistent object storage or a paid persistent disk
 
 ## 21. Setup Guide
 
@@ -882,6 +920,25 @@ http://localhost:8080/backend-web
 ```
 
 4. If the desktop client is being used, keep its API base URL aligned with that same backend context
+
+### Public Render Setup
+
+Current public deployment path:
+
+1. Push source to GitHub
+2. Render deploys the backend from `render.yaml`
+3. Aiven MySQL provides the live database
+4. Public entry points are:
+
+```text
+https://wsu-inter-office-system-backend.onrender.com/
+https://wsu-inter-office-system-backend.onrender.com/admin/login.jsp
+```
+
+Current note:
+
+- the free Render plan is suitable for demonstration and light usage
+- upload persistence is not guaranteed on the current free-tier setup
 
 ### Desktop Setup
 

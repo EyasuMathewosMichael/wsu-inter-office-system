@@ -34,16 +34,27 @@ This project supports day-to-day communication and coordination across universit
 - `MySQL / MariaDB`: relational data store
 - `SMTP`: email delivery for password reset links
 
-Main runtime base URL:
+Main local runtime base URL:
 
 ```text
 http://localhost:8080/backend-web
 ```
 
-Primary web entry points:
+Primary local web entry points:
 
 - `http://localhost:8080/backend-web/index.jsp`
 - `http://localhost:8080/backend-web/admin/login.jsp`
+
+## Public Deployment
+
+- `backend`: Render web service at `https://wsu-inter-office-system-backend.onrender.com/`
+- `database`: Aiven MySQL
+- `desktop app`: packaged Windows `.exe` configured to use the Render backend URL
+
+Primary public web entry points:
+
+- `https://wsu-inter-office-system-backend.onrender.com/`
+- `https://wsu-inter-office-system-backend.onrender.com/admin/login.jsp`
 
 ## Documentation Previews
 
@@ -88,6 +99,13 @@ README.md
 2. Open `frontend-desktop` in your IDE.
 3. Confirm the backend is reachable at `http://localhost:8080/backend-web`.
 4. Run the JavaFX client from `frontend-desktop/src/main/java/com/frontenddesktop/MainApp.java`.
+
+## Public Deployment Notes
+
+- The current public backend is deployed on Render free.
+- The current public database is hosted on Aiven MySQL.
+- The packaged desktop app can be pointed at the Render backend URL.
+- On Render free, uploaded files are stored on ephemeral storage and may be lost after redeploys or restarts.
 
 ## Documentation
 
