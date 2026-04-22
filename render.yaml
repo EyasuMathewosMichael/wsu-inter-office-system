@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: wsu-inter-office-system-backend
+    runtime: docker
+    rootDir: backend-web
+    dockerfilePath: ./Dockerfile
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /backend-web/index.jsp
+    envVars:
+      - key: DB_DRIVER
+        value: com.mysql.cj.jdbc.Driver
+      - key: DB_URL
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: MAIL_SMTP_HOST
+        sync: false
+      - key: MAIL_SMTP_PORT
+        sync: false
+      - key: MAIL_SMTP_USERNAME
+        sync: false
+      - key: MAIL_SMTP_PASSWORD
+        sync: false
+      - key: MAIL_FROM_EMAIL
+        sync: false
+      - key: MAIL_FROM_NAME
+        value: WSU IOCS

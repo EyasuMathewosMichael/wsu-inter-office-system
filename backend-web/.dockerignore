@@ -1,0 +1,3 @@
+target/
+.m2/
+src/main/webapp/WEB-INF/mail.properties
