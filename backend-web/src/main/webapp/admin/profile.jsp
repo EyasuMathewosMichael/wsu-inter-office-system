@@ -493,6 +493,7 @@
         toast.show();
     }
 </script>
+<%@ include file="navigation_prefetch.jspf" %>
 </body>
 </html>
 

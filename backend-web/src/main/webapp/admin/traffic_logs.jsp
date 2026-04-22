@@ -422,6 +422,7 @@
         if (overlay) overlay.addEventListener('click', toggleSidebar);
     });
 </script>
+<%@ include file="navigation_prefetch.jspf" %>
 </body>
 </html>
 

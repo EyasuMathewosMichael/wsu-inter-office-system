@@ -791,6 +791,7 @@
 
     setInterval(() => loadMessages(false), 4000);
 </script>
+<%@ include file="navigation_prefetch.jspf" %>
 
 </body>
 </html>
