@@ -315,6 +315,16 @@
                </a>
            </div>
 
+           <div class="nav-label mt-3 d-lg-none">Account</div>
+           <div class="list-group list-group-flush px-2 d-lg-none">
+               <a href="<%= response.encodeURL("profile.jsp") %>" class="list-group-item list-group-item-action <%= currentUri.endsWith("profile.jsp") ? "active" : "" %>">
+                   <i class="fas fa-id-card me-3"></i><span>My Profile</span>
+               </a>
+               <a href="<%= response.encodeURL("../logout.jsp") %>" class="list-group-item list-group-item-action">
+                   <i class="fas fa-sign-out-alt me-3"></i><span>Sign out</span>
+               </a>
+           </div>
+
            <div class="mt-auto p-3 border-top border-secondary border-opacity-25">
                <div class="dropdown">
                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle p-2 rounded-3" data-bs-toggle="dropdown" aria-expanded="false">
