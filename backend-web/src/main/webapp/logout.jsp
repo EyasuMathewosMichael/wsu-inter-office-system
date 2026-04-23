@@ -9,5 +9,5 @@
     session.invalidate();
 
     // 3. Redirect back to the login page with a success message [cite: 2026-01-26, 2026-01-28]
-    response.sendRedirect("admin/login.jsp?status=logged_out");
+    response.sendRedirect(response.encodeRedirectURL("admin/login.jsp?status=logged_out"));
 %>

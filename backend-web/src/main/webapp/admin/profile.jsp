@@ -238,7 +238,7 @@
 <%
     Object adminObj = session.getAttribute("admin_id");
     if (adminObj == null) {
-        response.sendRedirect("login.jsp?error=unauthorized");
+        response.sendRedirect(response.encodeRedirectURL("login.jsp?error=unauthorized"));
         return;
     }
     int adminId = Integer.parseInt(adminObj.toString());
@@ -294,23 +294,23 @@
 
            <div class="nav-label">Main Menu</div>
            <div class="list-group list-group-flush px-2">
-               <a href="dashboard.jsp" class="list-group-item list-group-item-action <%= currentUri.endsWith("dashboard.jsp") ? "active" : "" %>">
+               <a href="<%= response.encodeURL("dashboard.jsp") %>" class="list-group-item list-group-item-action <%= currentUri.endsWith("dashboard.jsp") ? "active" : "" %>">
                    <i class="fa-solid fa-house-chimney-window me-3"></i><span>Dashboard</span>
                </a>
-               <a href="manage_users.jsp" class="list-group-item list-group-item-action <%= currentUri.endsWith("manage_users.jsp") ? "active" : "" %>">
+               <a href="<%= response.encodeURL("manage_users.jsp") %>" class="list-group-item list-group-item-action <%= currentUri.endsWith("manage_users.jsp") ? "active" : "" %>">
                    <i class="fa-solid fa-user-gear me-3"></i><span>Manage Users</span>
                </a>
-               <a href="chat.jsp" class="list-group-item list-group-item-action <%= currentUri.endsWith("chat.jsp") ? "active" : "" %>">
+               <a href="<%= response.encodeURL("chat.jsp") %>" class="list-group-item list-group-item-action <%= currentUri.endsWith("chat.jsp") ? "active" : "" %>">
                   <i class="fa-solid fa-comment-dots me-3"></i><span>Communication Hub</span>
                </a>
            </div>
 
            <div class="nav-label mt-3">Administration</div>
            <div class="list-group list-group-flush px-2">
-               <a href="announcements.jsp" class="list-group-item list-group-item-action <%= currentUri.endsWith("announcements.jsp") ? "active" : "" %>">
+               <a href="<%= response.encodeURL("announcements.jsp") %>" class="list-group-item list-group-item-action <%= currentUri.endsWith("announcements.jsp") ? "active" : "" %>">
                    <i class="fa-solid fa-tower-broadcast me-3"></i><span>Announcements</span>
                </a>
-               <a href="traffic_logs.jsp" class="list-group-item list-group-item-action <%= currentUri.endsWith("traffic_logs.jsp") ? "active" : "" %>">
+               <a href="<%= response.encodeURL("traffic_logs.jsp") %>" class="list-group-item list-group-item-action <%= currentUri.endsWith("traffic_logs.jsp") ? "active" : "" %>">
                    <i class="fa-solid fa-chart-bar me-3"></i><span>Traffic Logs</span>
                </a>
            </div>
@@ -325,9 +325,9 @@
                        </div>
                    </a>
                    <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-0 p-2 mb-2 rounded-3">
-                       <li><a class="dropdown-item rounded-2 py-2" href="profile.jsp"><i class="fas fa-id-card me-2 opacity-50"></i>My Profile</a></li>
+                       <li><a class="dropdown-item rounded-2 py-2" href="<%= response.encodeURL("profile.jsp") %>"><i class="fas fa-id-card me-2 opacity-50"></i>My Profile</a></li>
                        <li><hr class="dropdown-divider opacity-10"></li>
-                       <li><a class="dropdown-item rounded-2 text-danger" href="../logout.jsp"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a></li>
+                       <li><a class="dropdown-item rounded-2 text-danger" href="<%= response.encodeURL("../logout.jsp") %>"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a></li>
                    </ul>
                </div>
            </div>
@@ -393,7 +393,7 @@
                                 </div>
 
                                 <div class="mt-5 d-flex justify-content-between align-items-center profile-actions">
-                                    <a href="dashboard.jsp" class="text-decoration-none text-muted small"><i class="fas fa-chevron-left me-1"></i> Back to Dashboard</a>
+                                    <a href="<%= response.encodeURL("dashboard.jsp") %>" class="text-decoration-none text-muted small"><i class="fas fa-chevron-left me-1"></i> Back to Dashboard</a>
                                     <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-bold shadow-sm" id="saveBtn">
                                         <span class="spinner-border spinner-border-sm loading-spinner me-2"></span> Save Changes
                                     </button>

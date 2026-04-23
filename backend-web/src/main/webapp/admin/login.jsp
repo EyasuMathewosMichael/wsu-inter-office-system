@@ -94,7 +94,7 @@
         </div>
     <%  } %>
 
-    <form action="../api/auth_admin.jsp" method="POST">
+    <form action="<%= response.encodeURL("../api/auth_admin.jsp") %>" method="POST">
         <div class="mb-3">
             <label class="form-label small fw-bold text-secondary">Username</label>
             <div class="input-group">

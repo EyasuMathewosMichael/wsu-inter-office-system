@@ -245,23 +245,23 @@
 
         <div class="nav-label">Main Menu</div>
         <div class="list-group list-group-flush px-2">
-            <a href="dashboard.jsp" class="list-group-item list-group-item-action <%= currentUri.endsWith("dashboard.jsp") ? "active" : "" %>">
+            <a href="<%= response.encodeURL("dashboard.jsp") %>" class="list-group-item list-group-item-action <%= currentUri.endsWith("dashboard.jsp") ? "active" : "" %>">
                 <i class="fa-solid fa-house-chimney-window me-3"></i><span>Dashboard</span>
             </a>
-            <a href="manage_users.jsp" class="list-group-item list-group-item-action <%= currentUri.endsWith("manage_users.jsp") ? "active" : "" %>">
+            <a href="<%= response.encodeURL("manage_users.jsp") %>" class="list-group-item list-group-item-action <%= currentUri.endsWith("manage_users.jsp") ? "active" : "" %>">
                 <i class="fa-solid fa-user-gear me-3"></i><span>Manage Users</span>
             </a>
-            <a href="chat.jsp" class="list-group-item list-group-item-action <%= currentUri.endsWith("chat.jsp") ? "active" : "" %>">
+            <a href="<%= response.encodeURL("chat.jsp") %>" class="list-group-item list-group-item-action <%= currentUri.endsWith("chat.jsp") ? "active" : "" %>">
                <i class="fa-solid fa-comment-dots me-3"></i><span>Communication Hub</span>
             </a>
         </div>
 
         <div class="nav-label mt-3">Administration</div>
         <div class="list-group list-group-flush px-2">
-            <a href="announcements.jsp" class="list-group-item list-group-item-action <%= currentUri.endsWith("announcements.jsp") ? "active" : "" %>">
+            <a href="<%= response.encodeURL("announcements.jsp") %>" class="list-group-item list-group-item-action <%= currentUri.endsWith("announcements.jsp") ? "active" : "" %>">
                 <i class="fa-solid fa-tower-broadcast me-3"></i><span>Announcements</span>
             </a>
-            <a href="traffic_logs.jsp" class="list-group-item list-group-item-action <%= currentUri.endsWith("traffic_logs.jsp") ? "active" : "" %>">
+            <a href="<%= response.encodeURL("traffic_logs.jsp") %>" class="list-group-item list-group-item-action <%= currentUri.endsWith("traffic_logs.jsp") ? "active" : "" %>">
                 <i class="fa-solid fa-chart-bar me-3"></i><span>Traffic Logs</span>
             </a>
         </div>
@@ -276,9 +276,9 @@
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-0 p-2 mb-2 rounded-3">
-                    <li><a class="dropdown-item rounded-2 py-2" href="profile.jsp"><i class="fas fa-id-card me-2 opacity-50"></i>My Profile</a></li>
+                    <li><a class="dropdown-item rounded-2 py-2" href="<%= response.encodeURL("profile.jsp") %>"><i class="fas fa-id-card me-2 opacity-50"></i>My Profile</a></li>
                     <li><hr class="dropdown-divider opacity-10"></li>
-                    <li><a class="dropdown-item rounded-2 text-danger" href="../logout.jsp"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a></li>
+                    <li><a class="dropdown-item rounded-2 text-danger" href="<%= response.encodeURL("../logout.jsp") %>"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a></li>
                 </ul>
             </div>
         </div>
@@ -319,7 +319,7 @@
 
             <div class="row g-4 mb-5">
                 <div class="col-12 col-md-4">
-                    <a href="manage_users.jsp" class="text-decoration-none">
+                    <a href="<%= response.encodeURL("manage_users.jsp") %>" class="text-decoration-none">
                         <div class="card stat-card shadow-sm p-4 bg-primary text-white h-100">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -332,7 +332,7 @@
                     </a>
                 </div>
                 <div class="col-12 col-md-4">
-                    <a href="traffic_logs.jsp?type=Task" class="text-decoration-none">
+                    <a href="<%= response.encodeURL("traffic_logs.jsp?type=Task") %>" class="text-decoration-none">
                         <div class="card stat-card shadow-sm p-4 bg-warning text-dark h-100">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -345,7 +345,7 @@
                     </a>
                 </div>
                 <div class="col-12 col-md-4">
-                    <a href="announcements.jsp" class="text-decoration-none">
+                    <a href="<%= response.encodeURL("announcements.jsp") %>" class="text-decoration-none">
                         <div class="card stat-card shadow-sm p-4 bg-success text-white h-100">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -362,7 +362,7 @@
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
                 <div class="card-header bg-white py-4 px-4 d-flex justify-content-between align-items-center border-bottom">
                     <h5 class="mb-0 fw-bold text-dark">Recent Activity</h5>
-                    <a href="traffic_logs.jsp" class="btn btn-sm btn-outline-primary rounded-pill px-4 fw-bold">Explore Logs</a>
+                    <a href="<%= response.encodeURL("traffic_logs.jsp") %>" class="btn btn-sm btn-outline-primary rounded-pill px-4 fw-bold">Explore Logs</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">

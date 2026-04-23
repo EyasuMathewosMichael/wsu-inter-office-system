@@ -34,7 +34,7 @@
             return;
         } else {
             // Standard page redirect for direct browser access
-            response.sendRedirect("login.jsp?error=unauthorized");
+            response.sendRedirect(response.encodeRedirectURL("login.jsp?error=unauthorized"));
             return;
         }
     }

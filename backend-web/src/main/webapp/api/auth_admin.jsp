@@ -12,7 +12,7 @@
 
     // 1. Basic validation to prevent empty queries
     if (user == null || pass == null || user.trim().isEmpty()) {
-        response.sendRedirect("../admin/login.jsp?error=empty");
+        response.sendRedirect(response.encodeRedirectURL("../admin/login.jsp?error=empty"));
         return;
     }
 
@@ -30,7 +30,7 @@
             String storedPassword = rs.getString("password");
             boolean validPassword = isBcryptHash(storedPassword) ? BCrypt.checkpw(pass, storedPassword) : pass.equals(storedPassword);
             if (!validPassword) {
-                response.sendRedirect("../admin/login.jsp?error=invalid");
+                response.sendRedirect(response.encodeRedirectURL("../admin/login.jsp?error=invalid"));
                 return;
             }
 
@@ -56,14 +56,14 @@
             adminSession.setAttribute("user_pic", rs.getString("profile_pic_path"));
             adminSession.setMaxInactiveInterval(30 * 60);
 
-            response.sendRedirect("../admin/dashboard.jsp");
+            response.sendRedirect(response.encodeRedirectURL("../admin/dashboard.jsp"));
         } else {
-            response.sendRedirect("../admin/login.jsp?error=invalid");
+            response.sendRedirect(response.encodeRedirectURL("../admin/login.jsp?error=invalid"));
         }
 
     } catch (Exception e) {
         e.printStackTrace();
-        response.sendRedirect("../admin/login.jsp?error=db_fail");
+        response.sendRedirect(response.encodeRedirectURL("../admin/login.jsp?error=db_fail"));
     } finally {
         if (conn != null) try { conn.close(); } catch(Exception e) {}
     }
