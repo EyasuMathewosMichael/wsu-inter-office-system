@@ -43,16 +43,18 @@
                 upgrade.close();
             }
 
-            session.setAttribute("user_id", userId);
-            session.setAttribute("admin_id", userId);
-            session.setAttribute("admin_name", rs.getString("full_name"));
-            session.setAttribute("admin_role", "Admin");
-            session.setAttribute("user_role", rs.getString("role"));
-            session.setAttribute("user_department", rs.getString("department"));
-            session.setAttribute("user_name", rs.getString("full_name"));
-            session.setAttribute("user_pic", rs.getString("profile_pic_path"));
-
-            session.setMaxInactiveInterval(30 * 60);
+            // Always start a fresh session after successful admin login.
+            session.invalidate();
+            HttpSession adminSession = request.getSession(true);
+            adminSession.setAttribute("user_id", userId);
+            adminSession.setAttribute("admin_id", userId);
+            adminSession.setAttribute("admin_name", rs.getString("full_name"));
+            adminSession.setAttribute("admin_role", "Admin");
+            adminSession.setAttribute("user_role", rs.getString("role"));
+            adminSession.setAttribute("user_department", rs.getString("department"));
+            adminSession.setAttribute("user_name", rs.getString("full_name"));
+            adminSession.setAttribute("user_pic", rs.getString("profile_pic_path"));
+            adminSession.setMaxInactiveInterval(30 * 60);
 
             response.sendRedirect("../admin/dashboard.jsp");
         } else {

@@ -238,7 +238,7 @@
 <%
     Object adminObj = session.getAttribute("admin_id");
     if (adminObj == null) {
-        response.sendRedirect("../login.jsp");
+        response.sendRedirect("login.jsp?error=unauthorized");
         return;
     }
     int adminId = Integer.parseInt(adminObj.toString());
