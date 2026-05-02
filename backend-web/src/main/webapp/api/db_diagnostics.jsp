@@ -27,6 +27,29 @@
                 json.put("current_user", rs.getString("db_user"));
             }
         }
+
+        try (PreparedStatement ps = conn.prepareStatement(
+                "SELECT COUNT(*) AS admin_count FROM users WHERE username = ? AND role = 'Admin'")) {
+            ps.setString(1, "admin");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    json.put("admin_user_count", rs.getInt("admin_count"));
+                }
+            }
+        }
+
+        try (PreparedStatement ps = conn.prepareStatement(
+                "SELECT user_id, username, role, password IS NOT NULL AS has_password FROM users WHERE username = ?")) {
+            ps.setString(1, "admin");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    json.put("admin_user_id", rs.getInt("user_id"));
+                    json.put("admin_username", rs.getString("username"));
+                    json.put("admin_role", rs.getString("role"));
+                    json.put("admin_has_password", rs.getBoolean("has_password"));
+                }
+            }
+        }
     } catch (Exception e) {
         json.put("status", "error");
         json.put("error_class", e.getClass().getName());
