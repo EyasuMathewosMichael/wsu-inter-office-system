@@ -7,6 +7,7 @@
     JSONObject json = new JSONObject();
     HttpSession existingSession = request.getSession(false);
 
+    json.put("app_build_marker", "session-diagnostics-2026-05-02-profile-route-check");
     json.put("has_session", existingSession != null);
     json.put("requested_session_id", request.getRequestedSessionId() == null ? JSONObject.NULL : request.getRequestedSessionId());
     json.put("requested_session_id_valid", request.isRequestedSessionIdValid());
