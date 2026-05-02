@@ -56,7 +56,7 @@
             adminSession.setAttribute("user_pic", rs.getString("profile_pic_path"));
             adminSession.setMaxInactiveInterval(30 * 60);
 
-            response.sendRedirect(response.encodeRedirectURL("../admin/dashboard.jsp"));
+            response.sendRedirect("../admin/dashboard.jsp;jsessionid=" + adminSession.getId());
         } else {
             response.sendRedirect(response.encodeRedirectURL("../admin/login.jsp?error=invalid"));
         }
@@ -68,4 +68,3 @@
         if (conn != null) try { conn.close(); } catch(Exception e) {}
     }
 %>
-
