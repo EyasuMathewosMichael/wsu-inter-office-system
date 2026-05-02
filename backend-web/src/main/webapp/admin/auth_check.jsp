@@ -1,29 +1,27 @@
 <%@ page trimDirectiveWhitespaces="true" %><%
-    // Verify Admin role with a small recovery path for partially restored sessions.
+    // Verify Admin role with a recovery path for partially restored sessions.
+    Object adminId = session.getAttribute("admin_id");
+    Object userId = session.getAttribute("user_id");
     Object role = session.getAttribute("admin_role");
-    if (role == null || !"Admin".equals(role)) {
-        Object adminId = session.getAttribute("admin_id");
-        Object userId = session.getAttribute("user_id");
-        Object userRole = session.getAttribute("user_role");
+    Object userRole = session.getAttribute("user_role");
 
-        boolean looksLikeAdminSession =
-            adminId != null ||
-            (
-                userId != null &&
-                userRole != null &&
-                "Admin".equalsIgnoreCase(userRole.toString())
-            );
+    boolean hasAdminId = adminId != null;
+    boolean hasAdminRole = role != null && "Admin".equalsIgnoreCase(role.toString().trim());
+    boolean hasAdminUserRole = userRole != null && "Admin".equalsIgnoreCase(userRole.toString().trim());
 
-        if (looksLikeAdminSession) {
-            session.setAttribute("admin_role", "Admin");
-            role = "Admin";
-            if (adminId == null && userId != null) {
-                session.setAttribute("admin_id", userId);
-            }
-        }
+    if (!hasAdminId && userId != null && hasAdminUserRole) {
+        session.setAttribute("admin_id", userId);
+        adminId = userId;
+        hasAdminId = true;
     }
 
-    if (role == null || !role.equals("Admin")) {
+    if (hasAdminId || hasAdminRole || hasAdminUserRole) {
+        session.setAttribute("admin_role", "Admin");
+        session.setAttribute("user_role", "Admin");
+        role = "Admin";
+    }
+
+    if (role == null || !"Admin".equalsIgnoreCase(role.toString().trim())) {
         // Detect if the request is coming from an API call (AJAX)
         String xRequestedWith = request.getHeader("X-Requested-With");
         String uri = request.getRequestURI();
@@ -37,7 +35,12 @@
             return;
         } else {
             // Standard page redirect for direct browser access
-            response.sendRedirect(response.encodeRedirectURL("login.jsp?error=unauthorized&reason=auth_check"));
+            String debugFlags =
+                "&has_admin_id=" + (adminId != null) +
+                "&has_admin_role=" + (session.getAttribute("admin_role") != null) +
+                "&has_user_id=" + (userId != null) +
+                "&has_user_role=" + (userRole != null);
+            response.sendRedirect(response.encodeRedirectURL("login.jsp?error=unauthorized&reason=auth_check" + debugFlags));
             return;
         }
     }
