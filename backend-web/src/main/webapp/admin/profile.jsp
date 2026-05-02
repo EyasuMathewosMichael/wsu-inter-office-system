@@ -238,9 +238,13 @@
 <%
     Object adminObj = session.getAttribute("admin_id");
     if (adminObj == null) {
+        adminObj = session.getAttribute("user_id");
+    }
+    if (adminObj == null) {
         response.sendRedirect(response.encodeRedirectURL("login.jsp?error=unauthorized"));
         return;
     }
+    session.setAttribute("admin_id", adminObj);
     int adminId = Integer.parseInt(adminObj.toString());
 
     String fullName = "", username = "", bio = "", phone = "", personalEmail = "", profilePic = "admin-avatar.png";

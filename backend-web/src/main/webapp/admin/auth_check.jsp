@@ -7,9 +7,12 @@
         Object userRole = session.getAttribute("user_role");
 
         boolean looksLikeAdminSession =
-            (adminId != null || userId != null) &&
-            userRole != null &&
-            "Admin".equalsIgnoreCase(userRole.toString());
+            adminId != null ||
+            (
+                userId != null &&
+                userRole != null &&
+                "Admin".equalsIgnoreCase(userRole.toString())
+            );
 
         if (looksLikeAdminSession) {
             session.setAttribute("admin_role", "Admin");

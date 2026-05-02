@@ -36,12 +36,16 @@
 
     Object adminObj = session.getAttribute("admin_id");
     if (adminObj == null) {
+        adminObj = session.getAttribute("user_id");
+    }
+    if (adminObj == null) {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         json.put("status", "error");
         json.put("message", "Please login again.");
         out.print(json.toString());
         return;
     }
+    session.setAttribute("admin_id", adminObj);
 
     int currentAdminId = Integer.parseInt(adminObj.toString());
     String fullName = null;
