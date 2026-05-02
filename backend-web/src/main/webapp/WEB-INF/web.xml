@@ -8,6 +8,11 @@
     <display-name>WSU School of Informatics - IOCS</display-name>
 
     <servlet>
+        <servlet-name>AdminProfilePage</servlet-name>
+        <jsp-file>/admin/profile.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
         <servlet-name>SendMessageAPI</servlet-name>
         <jsp-file>/api/send_message.jsp</jsp-file>
         <multipart-config>
@@ -80,6 +85,11 @@
             <file-size-threshold>0</file-size-threshold>
         </multipart-config>
     </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AdminProfilePage</servlet-name>
+        <url-pattern>/admin/profile.jsp</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>SendMessageAPI</servlet-name>
