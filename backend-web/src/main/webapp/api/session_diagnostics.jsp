@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
+<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" session="false"%>
 <%@ page import="org.json.JSONObject, javax.servlet.http.HttpSession" %>
 <%
     response.setContentType("application/json");
@@ -13,6 +13,10 @@
     json.put("requested_session_id_valid", request.isRequestedSessionIdValid());
     json.put("session_from_cookie", request.isRequestedSessionIdFromCookie());
     json.put("session_from_url", request.isRequestedSessionIdFromURL());
+    json.put("profile_resource_exists", application.getResource("/admin/profile.jsp") != null);
+    json.put("manage_users_resource_exists", application.getResource("/admin/manage_users.jsp") != null);
+    json.put("login_resource_exists", application.getResource("/admin/login.jsp") != null);
+    json.put("web_xml_resource_exists", application.getResource("/WEB-INF/web.xml") != null);
 
     if (existingSession != null) {
         json.put("session_id", existingSession.getId());
