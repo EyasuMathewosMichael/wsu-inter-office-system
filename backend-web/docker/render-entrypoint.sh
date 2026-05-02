@@ -15,11 +15,17 @@ mkdir -p "${ROOT_APP_DIR}/WEB-INF" "${LEGACY_APP_DIR}/WEB-INF"
 sed -i "s/port=\"8080\" protocol=\"HTTP\\/1\\.1\"/port=\"${PORT_VALUE}\" protocol=\"HTTP\\/1\\.1\"/" "${SERVER_XML}"
 
 for APP_DIR in "${ROOT_APP_DIR}" "${LEGACY_APP_DIR}"; do
+EXISTING_DB_CONFIG="${APP_DIR}/WEB-INF/db.properties"
+EXISTING_DB_DRIVER="$(awk -F= '$1 == "db.driver" { print substr($0, index($0, "=") + 1) }' "${EXISTING_DB_CONFIG}" 2>/dev/null || true)"
+EXISTING_DB_URL="$(awk -F= '$1 == "db.url" { print substr($0, index($0, "=") + 1) }' "${EXISTING_DB_CONFIG}" 2>/dev/null || true)"
+EXISTING_DB_USERNAME="$(awk -F= '$1 == "db.username" { print substr($0, index($0, "=") + 1) }' "${EXISTING_DB_CONFIG}" 2>/dev/null || true)"
+EXISTING_DB_PASSWORD="$(awk -F= '$1 == "db.password" { print substr($0, index($0, "=") + 1) }' "${EXISTING_DB_CONFIG}" 2>/dev/null || true)"
+
 cat > "${APP_DIR}/WEB-INF/db.properties" <<EOF
-db.driver=${DB_DRIVER:-com.mysql.cj.jdbc.Driver}
-db.url=${DB_URL:-jdbc:mysql://localhost:3306/inter_office_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
-db.username=${DB_USERNAME:-root}
-db.password=${DB_PASSWORD:-}
+db.driver=${DB_DRIVER:-${EXISTING_DB_DRIVER:-com.mysql.cj.jdbc.Driver}}
+db.url=${DB_URL:-${EXISTING_DB_URL:-jdbc:mysql://localhost:3306/inter_office_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}}
+db.username=${DB_USERNAME:-${EXISTING_DB_USERNAME:-root}}
+db.password=${DB_PASSWORD:-${EXISTING_DB_PASSWORD:-}}
 EOF
 done
 
