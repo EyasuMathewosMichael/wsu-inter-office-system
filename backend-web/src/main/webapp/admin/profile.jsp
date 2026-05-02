@@ -241,7 +241,7 @@
         adminObj = session.getAttribute("user_id");
     }
     if (adminObj == null) {
-        response.sendRedirect(response.encodeRedirectURL("login.jsp?error=unauthorized"));
+        response.sendRedirect(response.encodeRedirectURL("login.jsp?error=unauthorized&reason=profile_admin_id"));
         return;
     }
     session.setAttribute("admin_id", adminObj);
