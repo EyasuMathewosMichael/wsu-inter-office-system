@@ -245,7 +245,7 @@
         return;
     }
     session.setAttribute("admin_id", adminObj);
-    int adminId = Integer.parseInt(adminObj.toString());
+    int currentAdminId = Integer.parseInt(adminObj.toString());
 
     String fullName = "", username = "", bio = "", phone = "", personalEmail = "", profilePic = "admin-avatar.png";
 
@@ -253,7 +253,7 @@
         Connection conn = getDbConnection(application);
         ensureUsersPersonalEmailColumn(conn);
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE user_id = ?");
-        ps.setInt(1, adminId);
+        ps.setInt(1, currentAdminId);
         ResultSet rs = ps.executeQuery();
         if(rs.next()) {
             fullName = rs.getString("full_name");
