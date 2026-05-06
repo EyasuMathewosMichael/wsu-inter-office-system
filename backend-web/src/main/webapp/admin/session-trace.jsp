@@ -58,7 +58,7 @@
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 out.println("<strong>" + cookie.getName() + ":</strong> " + cookie.getValue() + "<br>");
-                out.println("&nbsp;&nbsp;Domain: " + cookie.getDomain() + ", Path: " + cookie.getPath() + ", MaxAge: " + cookie.getAge() + "<br>");
+                out.println("&nbsp;&nbsp;Domain: " + cookie.getDomain() + ", Path: " + cookie.getPath() + ", MaxAge: " + cookie.getMaxAge() + "<br>");
             }
         } else {
             out.println("NO COOKIES FOUND!");
